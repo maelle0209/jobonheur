@@ -1,0 +1,11 @@
+Candidat: ID_Candidat, Nom, Prénom, Email, Mot_de_passe, Date_Création
+CV: ID_CV, Cursus, Compétences, Expériences_Professionnelles, Langues, Réalisations
+Offre_Emploi: ID_Offre, Intitulé, Description, Salaire, Date_Création, Date_Actualisation, Lieu_Travail, Entreprise, Type_Contrat, Expérience_Exigée, Langues, Compétences, Nombre_Postes, Accessible_TH
+Secteur: ID_Secteur, Nom
+Style_Vie_Metier: ID_Style, Titre_Metier, Description, Conditions_de_Travail, Salaire_Moyen, Horaires
+Statistiques: ID_Statistiques, Taux_Chomage, Mois_Annee
+
+Possède_CV, 0N Candidat,0N CV:ID_Candidat,ID_CV
+Postuler_Offre, 1N Candidat, 1N Offre_Emploi:ID_Candidat,ID_Offre
+Afficher_Style_Vie, 1N Candidat, 1N Style_Vie_Metier, 1N Offre_Emploi:ID_Candidat,ID_Offre
+Statistiques_Chomage, 0N Statistiques,0N Secteur:ID_Secteur,ID_Statistiques
