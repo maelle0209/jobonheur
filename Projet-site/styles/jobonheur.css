@@ -19,6 +19,7 @@ body {
    align-items: center;
    text-align: center;
    color: white;
+   flex-direction: column; /*ajoute*/
 }
 
 .landing .overlay {
@@ -34,7 +35,14 @@ body {
    position: relative;
    z-index: 2;
    padding: 20px;
+   display: flex; /*ajoute jusqua height*/
+   flex-direction: column;
+   justify-content: space-between;
+   align-items: center;
+   height: 100%; /* Ensures the content takes up the full height */
 }
+
+
 
 .landing h1 {
    font-size: 4rem;
@@ -50,7 +58,7 @@ body {
 .buttons {
    display: flex;
    gap: 20px;
-   margin-bottom: 20px;
+   margin-bottom: 40px;
 }
 
 .btn {
