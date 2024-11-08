@@ -13,10 +13,10 @@
         <h1>JOBONHEUR</h1>
         <p>Match ton travail avec ton style de vie</p>
         <div class="buttons">
-            <a href="#register" class="btn">Créer un compte</a>
-            <a href="#login" class="btn">Connexion</a>
+            <a href="nouveau.php" class="btn">Créer un compte</a>
+            <a href="connexion.php" class="btn">Connexion</a>
         </div>
-        <p class="nouveau"><a href="nouveau.php">Nouveau Client</a></p>
+        
     </div>
 
     <!-- Information Section -->

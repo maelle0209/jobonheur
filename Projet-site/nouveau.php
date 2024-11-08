@@ -12,7 +12,7 @@ media="screen" />
 
     <h1>Nouveau Client</h1>
     <p>Création de Compte - Nouveau Client</p>
-    <form method="get" action="enregistrement.php" autocomplet-"off">
+    <form method="get" action="enregistrement.php" autocomplet="off">
  
     <p>
             Nom :
@@ -22,14 +22,7 @@ media="screen" />
             Prénom :
             <input type="text" name="p" value="<?php echo isset($_GET['p']) ? htmlspecialchars($_GET['p']) : ''; ?>"/>
         </p>
-        <p>
-            Adresse :
-            <input type="text" name="adr" value="<?php echo isset($_GET['adr']) ? htmlspecialchars($_GET['adr']) : ''; ?>"/>
-        </p>
-        <p>
-            Numéro de téléphone :
-            <input type="text" name="num" value="<?php echo isset($_GET['num']) ? htmlspecialchars($_GET['num']) : ''; ?>"/>
-        </p>
+       
         <p>
             Adresse e-mail :
             <input type="email" name="mail" value="<?php echo isset($_GET['mail']) ? htmlspecialchars($_GET['mail']) : ''; ?>"/>
