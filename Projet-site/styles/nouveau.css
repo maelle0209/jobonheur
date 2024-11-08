@@ -1,11 +1,11 @@
 html {
-    background-color: #A99ABD;
+    background-color: #f0e3a7;
     background-position: center top;
     
    }
    h1{
    text-align: center;
-   color: white;
+   color: black;
    font-size: 350%
    }
    
@@ -15,6 +15,6 @@ html {
    margin-right: auto;
    width: 500px;
    text-align: center;
-   color: white;}
+   color: black;}
    
    
