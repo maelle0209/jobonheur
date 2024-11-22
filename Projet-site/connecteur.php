@@ -20,7 +20,7 @@ if (isset($_POST['mail']) && isset($_POST['mdp'])) {
             'prenom' => $client['prenom'],
             'email' => $client['mail']
         ];
-        header('Location: jobonheur.php');
+        header('Location: section.php');
         exit;
     } else {
         echo '<p style="color: red;">Erreur : e-mail ou mot de passe incorrect. <a href="connexion.php">Réessayer</a>.</p>';

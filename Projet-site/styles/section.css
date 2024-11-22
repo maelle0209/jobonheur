@@ -1,0 +1,69 @@
+/* Styles généraux */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0e3a7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Header section avec le bouton "Retour à l'accueil" */
+.header {
+    position: fixed;
+    top: 20px; /* Distance du haut */
+    right: 20px; /* Distance de la droite */
+    z-index: 10; /* S'assure que le bouton reste au-dessus des autres éléments */
+}
+
+.btn-retour {
+    background-color: #f04a00;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-retour:hover {
+    background-color: #d93e00;
+    transform: scale(1.05);
+}
+
+/* Message de bienvenue */
+.welcome-message {
+    width: 100%;           /* Prend toute la largeur de l'écran */
+    text-align: center;     /* Centre le texte horizontalement */
+    font-size: 1.8rem;
+    margin-top: 100px;      /* Crée un espace sous le bouton "Retour à l'accueil" */
+    color: #333;
+    font-weight: bold;      /* Peut être ajouté pour plus de visibilité */
+}
+
+
+/* Section des options avec les boutons centrés */
+.option-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 50px;
+}
+
+.btn-option {
+    background-color: #f04a00;
+    color: white;
+    padding: 15px 30px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    text-align: center;
+    border-radius: 5px;
+    width: 250px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-option:hover {
+    background-color: #d93e00;
+    transform: scale(1.05);
+}

@@ -1,0 +1,136 @@
+/* Général */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #f04a00;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+main {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+/* Formulaire */
+.form-section {
+    width: 45%;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #f04a00;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #d93e00;
+}
+
+/* Aperçu */
+.preview-section {
+    width: 45%;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#cv-preview {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.cv-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.cv-header img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #f04a00;
+}
+
+.cv-header-info h2 {
+    margin: 0;
+}
+
+hr {
+    border: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+/* Sections spécifiques */
+.cv-section {
+    margin-bottom: 20px;
+}
+
+.cv-section h4 {
+    margin-bottom: 10px;
+    color: #f04a00;
+    font-size: 1.2rem;
+}
+
+.cv-section p {
+    margin: 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Éducation */
+.cv-section.education {
+    background-color: #fff4db;
+    padding: 10px;
+    border-radius: 5px;
+    border-left: 4px solid #f04a00;
+}
+
+/* Langues */
+.cv-section.languages {
+    background-color: #e8f8e8;
+    padding: 10px;
+    border-radius: 5px;
+    border-left: 4px solid #f04a00;
+}
+
+.cv-section.languages p,
+.cv-section.education p {
+    margin: 5px 0;
+}

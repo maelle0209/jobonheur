@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Constructeur de CV</title>
+    <link rel="stylesheet" href="styles/cv.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+</head>
+<body>
+    <header>
+        <h1>Constructeur de CV</h1>
+        <p>Concevez votre CV de manière professionnelle et élégante.</p>
+    </header>
+
+    <main>
+        <!-- Formulaire pour entrer les informations -->
+        <section class="form-section">
+            <h2>Informations Personnelles</h2>
+            <form id="cv-form">
+                <label for="name"><i class="fas fa-user"></i> Nom complet:</label>
+                <input type="text" id="name" placeholder="Votre nom complet" required>
+
+                <label for="title"><i class="fas fa-briefcase"></i> Titre professionnel:</label>
+                <input type="text" id="title" placeholder="Exemple: Développeur Web">
+
+                <label for="photo"><i class="fas fa-image"></i> Photo de profil:</label>
+                <input type="file" id="photo" accept="image/*">
+
+                <label for="education"><i class="fas fa-graduation-cap"></i> Éducation:</label>
+                <textarea id="education" placeholder="Décrivez votre parcours éducatif (Écoles, diplômes, années)"></textarea>
+
+                <label for="experience"><i class="fas fa-history"></i> Expérience:</label>
+                <textarea id="experience" placeholder="Décrivez votre expérience..."></textarea>
+
+                <label for="skills"><i class="fas fa-tools"></i> Compétences:</label>
+                <input type="text" id="skills" placeholder="Compétences séparées par des virgules">
+
+                <label for="languages"><i class="fas fa-language"></i> Langues:</label>
+                <input type="text" id="languages" placeholder="Exemple: Français, Anglais, Espagnol">
+
+                <label for="contact"><i class="fas fa-envelope"></i> Contact (Email / Téléphone):</label>
+                <input type="text" id="contact" placeholder="exemple@mail.com / 0123456789">
+
+                <button type="button" id="preview-btn">Voir un aperçu</button>
+            </form>
+        </section>
+
+        <!-- Aperçu en temps réel -->
+        <section class="preview-section">
+            <h2>Aperçu du CV</h2>
+            <div id="cv-preview">
+                <div class="cv-header">
+                    <img id="preview-photo" src="default-photo.png" alt="Photo de profil">
+                    <div class="cv-header-info">
+                        <h2 id="preview-name">Votre nom ici</h2>
+                        <h3 id="preview-title">Titre professionnel</h3>
+                        <p id="preview-contact">Contact ici</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="cv-body">
+                    <div class="cv-section">
+                        <h4><i class="fas fa-graduation-cap"></i> Éducation</h4>
+                        <p id="preview-education">Éducation...</p>
+                    </div>
+                    <div class="cv-section">
+                        <h4><i class="fas fa-history"></i> Expérience</h4>
+                        <p id="preview-experience">Expérience...</p>
+                    </div>
+                    <div class="cv-section">
+                        <h4><i class="fas fa-tools"></i> Compétences</h4>
+                        <p id="preview-skills">Compétences...</p>
+                    </div>
+                    <div class="cv-section">
+                        <h4><i class="fas fa-language"></i> Langues</h4>
+                        <p id="preview-languages">Langues...</p>
+                    </div>
+                </div>
+            </div>
+            <button id="download-btn">Télécharger en PDF</button>
+        </section>
+    </main>
+
+    <script src="scripts/cv.js"></script>
+</body>
+</html>
