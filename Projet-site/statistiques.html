@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiques - Jobonheur</title>
+    <link rel="stylesheet" href="styles/statistiques.css">
+</head>
+<body>
+
+    <!-- Bouton de retour à la page précédente -->
+    <div class="header">
+        <a href="section.php" class="btn-retour">Retour à l'accueil</a>
+    </div>
+
+    <!-- Présentation des statistiques -->
+    <div class="presentation">
+        <h2>Les statistiques du chômage en France selon l'INSEE</h2>
+        <p>Les données suivantes reflètent l'évolution du chômage en France, avec une analyse détaillée selon différents critères. Ces informations sont mises à jour régulièrement par l'INSEE afin de mieux comprendre les tendances du marché du travail.</p>
+    </div>
+
+    <!-- Section des options de filtrage des statistiques -->
+    <div class="option-section">
+        <button class="btn-option" onclick="showStat('sexe')">Statistiques par Sexe</button>
+        <button class="btn-option" onclick="showStat('age')">Statistiques par Âge</button>
+        <button class="btn-option" onclick="showStat('diplome')">Statistiques par Diplôme</button>
+    </div>
+
+    <!-- Section pour afficher les figures et les interprétations -->
+    <div id="stat-result" class="stat-result">
+        <!-- Image initialement masquée -->
+        <img src="" alt="statistiques" id="stat-image" style="display: none;" />
+        <div class="stat-interpretation" id="stat-interpretation">
+            <p>Sélectionnez une option pour afficher les statistiques associées et leur interprétation.</p>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour afficher les statistiques et leur interprétation
+        function showStat(option) {
+            const imageElement = document.getElementById('stat-image');
+            const interpretationDiv = document.getElementById('stat-interpretation');
+
+            // Variables pour l'image et l'interprétation
+            let imageSrc = '';
+            let interpretationText = '';
+
+            // Déterminer l'image et l'interprétation à afficher
+            if (option === 'sexe') {
+                imageSrc = 'images/sexe.png';
+                interpretationText = 'Cette statistique montre les taux de chômage en fonction du sexe. On peut observer une différence notable entre les hommes et les femmes selon les secteurs.';
+            } else if (option === 'age') {
+                imageSrc = 'images/age.png';
+                interpretationText = 'Cette statistique illustre les taux de chômage selon les tranches d’âge. Les jeunes adultes sont souvent les plus touchés par le chômage.';
+            } else if (option === 'diplome') {
+                imageSrc = 'images/niveau de diplome.png';
+                interpretationText = 'Cette statistique analyse l’impact du niveau de diplôme sur le chômage. Les individus moins diplômés sont souvent plus vulnérables.';
+            }
+
+            // Mettre à jour l'image
+            imageElement.src = imageSrc;
+            imageElement.alt = interpretationText;
+
+            // Afficher l'image et l'interprétation
+            imageElement.style.display = 'block'; // Rendre visible l'image
+            interpretationDiv.innerHTML = `<p>${interpretationText}</p>`;
+        }
+    </script>
+
+</body>
+</html>

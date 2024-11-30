@@ -1,0 +1,98 @@
+/* Styles généraux */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0e3a7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Header section avec le bouton "Retour à l'accueil" */
+.header {
+    position: fixed;
+    top: 20px; /* Distance du haut */
+    right: 20px; /* Distance de la droite */
+    z-index: 10; /* S'assure que le bouton reste au-dessus des autres éléments */
+}
+
+.btn-retour {
+    background-color: #f04a00;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-retour:hover {
+    background-color: #d93e00;
+    transform: scale(1.05);
+}
+
+/* Message de bienvenue */
+.welcome-message {
+    width: 100%;           /* Prend toute la largeur de l'écran */
+    text-align: center;     /* Centre le texte horizontalement */
+    font-size: 1.8rem;
+    margin-top: 100px;      /* Crée un espace sous le bouton "Retour à l'accueil" */
+    color: #333;
+    font-weight: bold;      /* Peut être ajouté pour plus de visibilité */
+}
+
+
+/* Section des options avec les boutons */
+.option-section {
+    display: flex;
+    flex-direction: row; /* Aligne les boutons sur une seule ligne */
+    justify-content: center; /* Centre les boutons horizontalement */
+    gap: 20px; /* Espace entre les boutons */
+    margin-top: 50px;
+}
+
+
+.btn-option {
+    background-color: #f04a00;
+    color: white;
+    padding: 15px 30px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    text-align: center;
+    border-radius: 5px;
+    width: 250px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.btn-option {
+    flex: 1; /* Permet aux boutons de prendre des tailles similaires */
+    max-width: 250px; /* Limite la largeur des boutons */
+    text-align: center;
+}
+
+
+.btn-option:hover {
+    background-color: #d93e00;
+    transform: scale(1.05);
+}
+.stat-result {
+    display: flex; /* Affiche l'image et le texte sur une seule ligne */
+    align-items: flex-start; /* Aligne les éléments en haut */
+    gap: 20px; /* Ajoute un espace entre l'image et le texte */
+    margin-top: 20px;
+}
+
+.stat-result img {
+    max-width: 1000px; /* Taille maximale de l'image */
+    width: 100%; /* Ajuste automatiquement à la largeur du conteneur */
+    height: auto; /* Conserve les proportions */
+    margin: 0; /* Supprime les marges par défaut */
+}
+
+.stat-interpretation {
+    max-width: 400px; /* Limite la largeur de la zone d'interprétation */
+    font-size: 1rem; /* Taille de police lisible */
+    color: #333; /* Couleur du texte */
+    line-height: 1.5; /* Améliore la lisibilité */
+}
+
+
