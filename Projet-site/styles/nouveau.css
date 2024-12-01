@@ -1,20 +1,74 @@
+/* Style de fond */
 html {
-    background-color: #f0e3a7;
-    background-position: center top;
-    
-   }
-   h1{
-   text-align: center;
-   color: black;
-   font-size: 350%
-   }
-   
-  
-   p{
-   margin-left: auto;
-   margin-right: auto;
-   width: 500px;
-   text-align: center;
-   color: black;}
-   
-   
+    background-color: #fdf3e3; /* Couleur crème */
+    font-family: Arial, sans-serif; /* Police par défaut */
+}
+
+/* Style général des titres */
+h1 {
+    text-align: center;
+    color: #000; /* Noir */
+    font-size: 2.5em; /* Taille agrandie */
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* Texte centré */
+p {
+    text-align: center;
+    color: black;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+/* Style des formulaires */
+form {
+    background-color: #fff; /* Fond blanc */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre légère */
+    width: 400px;
+    margin: 0 auto; /* Centrer le formulaire */
+    padding: 20px;
+}
+
+/* Champs de formulaire */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    display: block;
+    box-sizing: border-box;
+}
+
+/* Bouton d'envoi */
+input[type="submit"] {
+    background-color: #e94d20; /* Orange */
+    color: white;
+    font-size: 1.1em;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Style bouton au survol */
+input[type="submit"]:hover {
+    background-color: #c13b18; /* Orange foncé */
+}
+
+/* Liens */
+a {
+    color: #e94d20; /* Couleur des liens */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
