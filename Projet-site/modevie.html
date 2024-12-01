@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filter Employees by Lifestyle</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <link rel="stylesheet" href="styles/modevie.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Filter Employees Based on Lifestyle</h1>
+    
+    <div class="filters">
+      <h2>Filtres</h2>
+      <form id="filters-form">
+        <label for="age">Âge:</label>
+        <input type="number" id="age" name="age" min="18" max="100">
+        
+        <label for="job-role">Rôle Professionnel:</label>
+        <select id="job-role" name="job-role">
+          <option value="any">Tout</option>
+          <option value="HR">HR</option>
+          <option value="Data Scientist">Data Scientist</option>
+          <option value="Software Engineer">Software Engineer</option>
+          <option value="Sales">Sales</option>
+        </select>
+        
+        <label for="stress-level">Niveau de stress:</label>
+        <select id="stress-level" name="stress-level">
+          <option value="any">Tout</option>
+          <option value="Low">Bas</option>
+          <option value="Medium">Moyen</option>
+          <option value="High">Élevé</option>
+        </select>
+
+        <label for="physical-activity">Activité physique:</label>
+        <select id="physical-activity" name="physical-activity">
+          <option value="any">Tout</option>
+          <option value="None">Aucune</option>
+          <option value="Weekly">Hebdomadaire</option>
+          <option value="Daily">Quotidienne</option>
+        </select>
+
+        <label for="sleep-quality">Qualité du sommeil:</label>
+        <select id="sleep-quality" name="sleep-quality">
+          <option value="any">Tout</option>
+          <option value="Poor">Mauvaise</option>
+          <option value="Average">Moyenne</option>
+          <option value="Good">Bonne</option>
+        </select>
+
+        <button type="submit">Appliquer les filtres</button>
+      </form>
+    </div>
+
+    <div class="results">
+      <h2>Résultats</h2>
+      <div id="results-list"></div>
+    </div>
+  </div>
+
+  <script src="scripts/scrpt-modevie.js"></script>
+</body>
+</html>

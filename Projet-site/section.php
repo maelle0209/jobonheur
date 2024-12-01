@@ -21,7 +21,7 @@
     <div class="option-section">
         <a href="cv.html" class="btn-option">CV</a>
         <a href="match.html" class="btn-option">Match</a>
-        <a href="metier.html" class="btn-option">Découvre ton métier</a>
+        <a href="modevie.html" class="btn-option">Découvre ton métier</a>
         <a href="statistiques.html" class="btn-option">Statistique</a>
     </div>
 
