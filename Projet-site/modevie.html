@@ -3,29 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Filter Employees by Lifestyle</title>
+  <title>Mode de Vie - Filtrage</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
   <link rel="stylesheet" href="styles/modevie.css">
 </head>
 <body>
+  <!-- Bouton Retour à l'accueil -->
+  <div class="back-home">
+    <a href="section.php" class="home-button">Retour à l'accueil</a>
+  </div>
+
+  <!-- Conteneur principal -->
   <div class="container">
-    <h1>Filter Employees Based on Lifestyle</h1>
-    
+    <!-- Section des filtres -->
     <div class="filters">
       <h2>Filtres</h2>
       <form id="filters-form">
+        <!-- Champ Âge -->
         <label for="age">Âge:</label>
-        <input type="number" id="age" name="age" min="18" max="100">
-        
+        <input type="number" id="age" name="age" min="18" max="100" placeholder="Ex : 30">
+
+        <!-- Champ Rôle Professionnel -->
         <label for="job-role">Rôle Professionnel:</label>
         <select id="job-role" name="job-role">
           <option value="any">Tout</option>
-          <option value="HR">HR</option>
+          <option value="HR">Ressources Humaines</option>
           <option value="Data Scientist">Data Scientist</option>
-          <option value="Software Engineer">Software Engineer</option>
-          <option value="Sales">Sales</option>
+          <option value="Software Engineer">Ingénieur Logiciel</option>
+          <option value="Sales">Commercial</option>
         </select>
-        
+
+        <label for="industry">Industrie :</label>
+        <select id="industry" name="industry">
+          <option value="any">Toutes</option>
+          <option value="IT">Informatique</option>
+          <option value="Manufacturing">Manufacture</option>
+          <option value="Healthcare">Santé</option>
+          <option value="Consulting">Consultance</option>
+          <option value="Retail">Commerce de détail</option>
+          <option value="Education">Éducation</option>
+        </select>
+
+        <label for="work-location">Lieu de Travail :</label>
+        <select id="work-location" name="work-location">
+         <option value="any">Tous</option>
+         <option value="Remote">À distance</option>
+         <option value="Hybrid">Hybride</option>
+         <option value="Onsite">Sur place</option>
+        </select>
+
+
+        <!-- Champ Niveau de Stress -->
         <label for="stress-level">Niveau de stress:</label>
         <select id="stress-level" name="stress-level">
           <option value="any">Tout</option>
@@ -34,6 +62,7 @@
           <option value="High">Élevé</option>
         </select>
 
+        <!-- Champ Activité Physique -->
         <label for="physical-activity">Activité physique:</label>
         <select id="physical-activity" name="physical-activity">
           <option value="any">Tout</option>
@@ -42,6 +71,7 @@
           <option value="Daily">Quotidienne</option>
         </select>
 
+        <!-- Champ Qualité du Sommeil -->
         <label for="sleep-quality">Qualité du sommeil:</label>
         <select id="sleep-quality" name="sleep-quality">
           <option value="any">Tout</option>
@@ -50,15 +80,24 @@
           <option value="Good">Bonne</option>
         </select>
 
+        <!-- Bouton d'application des filtres -->
         <button type="submit">Appliquer les filtres</button>
       </form>
     </div>
 
+    <!-- Section des résultats -->
     <div class="results">
       <h2>Résultats</h2>
-      <div id="results-list"></div>
+      <div id="results-list">
+        <!-- Les résultats filtrés s'afficheront ici -->
+      </div>
+
+      <!-- Conteneur pour les boutons de pagination -->
+      <div id="pagination-controls" style="margin-top: 20px; text-align: center;"></div>
     </div>
   </div>
+  
+
 
   <script src="scripts/scrpt-modevie.js"></script>
 </body>
