@@ -1,16 +1,18 @@
-/* General body styling */
+/* Général */
 body {
-   font-family: Arial, sans-serif;
+   font-family: 'Arial', sans-serif;
    margin: 0;
    padding: 0;
-   background-color: #f0e3a7;
-   scroll-behavior: smooth; /* Smooth scrolling */
+   background-color: #fdf3e3; /* Couleur de fond douce */
+   scroll-behavior: smooth;
+   line-height: 1.6;
+   overflow-x: hidden; /* Empêche le défilement horizontal */
 }
 
-/* Landing section styling */
+/* Landing Section */
 .landing {
    position: relative;
-   background-image: url('../images/img.jpg'); /* Your background image */
+   background-image: url('../images/photo.jpg'); /* Ton image de fond */
    background-size: cover;
    background-position: center;
    height: 100vh;
@@ -19,7 +21,8 @@ body {
    align-items: center;
    text-align: center;
    color: white;
-   flex-direction: column; /*ajoute*/
+   flex-direction: column;
+   padding: 20px;
 }
 
 .landing .overlay {
@@ -28,37 +31,30 @@ body {
    left: 0;
    right: 0;
    bottom: 0;
-   background-color: rgba(0, 0, 0, 0.6); /* Dark overlay to enhance text readability */
+   background-color: rgba(0, 0, 0, 0.6); /* Couverture sombre pour améliorer la lisibilité */
+   z-index: 1;
 }
-
-.landing .content {
-   position: relative;
-   z-index: 2;
-   padding: 20px;
-   display: flex; /*ajoute jusqua height*/
-   flex-direction: column;
-   justify-content: space-between;
-   align-items: center;
-   height: 100%; /* Ensures the content takes up the full height */
-}
-
-
 
 .landing h1 {
-   font-size: 4rem;
+   font-size: 6rem;
    margin-bottom: 10px;
-   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); /* Text shadow for better visibility */
+   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9); /* Ombre portée pour la lisibilité */
+   font-weight: bold;
+   margin-top: -100px; /* Décale le titre vers le haut */
 }
 
 .landing p {
-   font-size: 1.5rem;
-   margin-bottom: 20px;
+   font-size: 1.6rem;
+   margin-top: -20px;
+   margin-bottom: 280px;
+   text-shadow: 3px 3px 9px rgba(0, 0, 0, 0.9); /* Ombre douce */
 }
 
 .buttons {
    display: flex;
-   gap: 20px;
-   margin-bottom: 40px;
+   gap: 60px;
+   justify-content: center;
+   margin-top: 30px;
 }
 
 .btn {
@@ -66,59 +62,93 @@ body {
    color: white;
    padding: 15px 30px;
    text-decoration: none;
-   font-size: 1rem;
-   border-radius: 5px;
+   font-size: 1.2rem;
+   border-radius: 8px;
    transition: background-color 0.3s ease, transform 0.3s ease;
+   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Ombre subtile */
 }
 
 .btn:hover {
    background-color: #d93e00;
-   transform: scale(1.05);
+   transform: scale(1.1); /* Légère augmentation de la taille au survol */
 }
 
 .nouveau-link {
-    color: #f0d000;
-    text-decoration: underline;
+   color: #f0d000;
+   text-decoration: underline;
+   font-weight: bold;
 }
 
 .nouveau-link:hover {
-    color: #f0e3a7;
+   color: #f0e3a7;
 }
 
-/* Information section styling */
+/* Section Information */
 .info-section {
    display: flex;
    justify-content: space-around;
-   padding: 40px;
+   padding: 50px 20px;
    background-color: #fff4db;
+   gap: 30px;
 }
 
 .info-box {
    background-color: white;
-   padding: 20px;
-   border-radius: 10px;
+   padding: 25px;
+   border-radius: 12px;
    width: 30%;
    text-align: center;
-   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-   transition: transform 0.3s ease;
+   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); /* Ombre plus marquée */
+   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .info-box:hover {
    transform: translateY(-10px);
+   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Ombre plus profonde au survol */
 }
 
 .info-box h3 {
-   margin-bottom: 15px;
-   font-size: 1.5rem;
+   margin-bottom: 20px;
+   font-size: 1.7rem;
+   color: #f04a00;
+   font-weight: bold;
 }
 
-/* Footer styling */
+.info-box p {
+   font-size: 1.1rem;
+   color: #333;
+}
+
+/* Footer Section */
 footer {
    text-align: center;
-   padding: 20px;
+   padding: 30px;
    background-color: #f04a00;
    color: white;
    position: relative;
    width: 100%;
    bottom: 0;
+   font-size: 1rem;
+   letter-spacing: 0.5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+   .info-section {
+      flex-direction: column;
+      padding: 20px;
+   }
+
+   .info-box {
+      width: 80%;
+      margin-bottom: 20px;
+   }
+
+   .landing h1 {
+      font-size: 3rem;
+   }
+
+   .landing p {
+      font-size: 1.3rem;
+   }
 }
