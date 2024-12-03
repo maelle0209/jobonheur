@@ -3,7 +3,7 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #fdf3e3;
     color: #333;
 }
 
@@ -133,4 +133,26 @@ hr {
 .cv-section.languages p,
 .cv-section.education p {
     margin: 5px 0;
+}
+/* Bouton "Retour à l'accueil" */
+.back-home-button {
+    position: absolute; /* Position fixe pour placer le bouton */
+    top: 20px;
+    right: 20px;
+    background-color: #fdf3e3; /* Beige pour se démarquer */
+    color: #f04a00; /* Texte orange */
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    border: 2px solid #f04a00; /* Bordure orange */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.back-home-button:hover {
+    background-color: #f04a00; /* Orange au survol */
+    color: white; /* Texte blanc */
+}
+.header-container {
+    position: relative;
 }
