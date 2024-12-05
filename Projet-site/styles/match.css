@@ -1,128 +1,249 @@
-/* === Style général === */
+/* Style général du body et des sections */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     height: 100vh;
+<<<<<<< HEAD
     margin: 0;
     background-color:#fdf3e3;
     overflow: hidden; /* Empêche le défilement pendant les animations */
+=======
+>>>>>>> ad9f35cfcbdfa1c1d2fa3a02e78e7409a98fe293
 }
 
-/* === Carte de l'offre d'emploi === */
-.job-card {
-    position: relative; /* Nécessaire pour positionner l'indicateur */
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
+.container {
+    max-width: 1200px;
     width: 100%;
-    height: 80vh; /* Limite la hauteur à 80% de la fenêtre */
-    overflow-y: auto; /* Barre de défilement verticale si nécessaire */
-    text-align: left;
-    word-wrap: break-word; /* Empêche les mots longs de dépasser */
-    transition: transform 0.3s ease, opacity 0.3s ease; /* Animation fluide */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
 }
 
-/* === Texte qui apparaît lors du swipe === */
+/* Section des favoris à gauche */
+.favorites {
+    width: 30%;
+    background-color: #f04a00;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.favorites h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.favorites ul {
+    list-style: none;
+    padding: 0;
+}
+
+.favorites li {
+    background-color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.favorites li:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Section des offres à droite */
+.job-container {
+    width: 70%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    height: 80vh;
+    overflow-y: auto;
+}
+
+.job-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.job-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.job-card h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.job-card p {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+.job-card p strong {
+    color: #333;
+}
+
+.actions {
+    display: flex;              /* Aligner les éléments en ligne (horizontalement) */
+    justify-content: center;    /* Centre les boutons horizontalement */
+    align-items: center;        /* Centre les boutons verticalement */
+    gap: 30px;                  /* Espacement entre les boutons (ajustez comme vous voulez) */
+    margin-top: 20px;
+}
+
+/* Les boutons */
+.action-btn {
+    background-color: transparent;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.action-btn:hover {
+    transform: scale(1.2); /* Agrandir les boutons au survol */
+}
+
+/* Icones pour les boutons */
+.action-btn i {
+    color: #444; /* Couleur par défaut */
+}
+
+.action-btn.heart i {
+    color: #e74c3c; /* Couleur rouge pour le cœur */
+}
+
+.action-btn.cross i {
+    color: #3498db; /* Couleur bleue pour la croix */
+}
+
+.action-btn.heart {
+    color: #e74c3c;
+    background-color: #f7c5c5;
+}
+
+.action-btn.heart:hover {
+    color: #fff;
+    background-color: #e74c3c;
+    transform: scale(1.1);
+}
+
+.action-btn.cross {
+    color: #3498db;
+    background-color: #c4d9f2;
+}
+
+.action-btn.cross:hover {
+    color: #fff;
+    background-color: #3498db;
+    transform: scale(1.1);
+}
+
+.action-btn:focus {
+    outline: none;
+}
+
+/* Bouton retour à l'accueil */
+.btn-retour {
+    display: inline-block;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 20px;
+    background-color: #f04a00;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.btn-retour:hover {
+    background-color: #d93e00;
+    transform: scale(1.05);
+}
+
+/* Effet de transition pour les cartes de jobs */
+.job-card.swipe-left {
+    transform: translateX(-100%) rotate(-15deg);
+}
+
+.job-card.swipe-right {
+    transform: translateX(100%) rotate(15deg);
+}
+
+/* Indicateur d'action pendant le swipe */
 .action-indicator {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: bold;
-    color: white;
-    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.3);
     opacity: 0;
     transition: opacity 0.3s ease;
-    pointer-events: none; /* Empêche les interactions avec la souris */
 }
 
-/* === Swipe à droite : Favoris === */
-.job-card.swipe-right {
-    transform: translateX(100%) rotate(15deg);
-    opacity: 0; /* La carte disparaît après le swipe */
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .favorites, .job-container {
+        width: 100%;
+    }
+
+    .job-card {
+        padding: 15px;
+    }
+
+    .favorites li {
+        font-size: 0.9rem;
+    }
 }
 
-.job-card.swipe-right .action-indicator {
-    color: #4caf50; /* Vert pour "Favoris" */
-    opacity: 1;
-}
+@media screen and (max-width: 480px) {
+    .job-card h2 {
+        font-size: 1.5rem;
+    }
 
-/* === Swipe à gauche : Refus === */
-.job-card.swipe-left {
-    transform: translateX(-100%) rotate(-15deg);
-    opacity: 0; /* La carte disparaît après le swipe */
-}
+    .action-btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
 
-.job-card.swipe-left .action-indicator {
-    color: #f44336; /* Rouge pour "Refus" */
-    opacity: 1;
-}
-
-/* === Boutons d'action (❤️ et ❌) === */
-.actions {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 30px; /* Espacement entre les boutons */
-}
-
-.action-btn {
-    background-color: white;
-    border: 2px solid #ccc;
-    padding: 15px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    height: 60px;
-}
-
-.action-btn:hover {
-    border-color: #888;
-    transform: scale(1.1); /* Agrandit légèrement au survol */
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* Bouton ❤️ */
-.heart {
-    color: #e91e63; /* Rose vif */
-}
-
-/* Bouton ❌ */
-.cross {
-    color: #f44336; /* Rouge vif */
-}
-
-/* === Header avec bouton de retour === */
-.header {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 10; /* S'assure que le bouton reste au-dessus */
-}
-
-.btn-retour {
-    background-color: #f04a00; /* Orange */
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 10px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    font-size: 1rem;
-    font-weight: bold;
-}
-
-.btn-retour:hover {
-    background-color: #d93e00; /* Orange plus foncé au survol */
-    transform: translateY(-2px) scale(1.05);
+    .btn-retour {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
 }
