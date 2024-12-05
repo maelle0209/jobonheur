@@ -116,11 +116,11 @@ if (isset($_POST['mail']) && isset($_POST['mdp'])) {
 </head>
 <body>
     <div class="container">
-        <h1>Jobonheur</h1>
+        <h1>Oups...</h1>
 
         <?php if (isset($error)): ?>
             <div class="error">
-                <img src="images/erreur.png" alt="Erreur">
+                <img src="images/erreur11.png" alt="Erreur">
                 <p><?= htmlspecialchars($error) ?></p>
             </div>
         <?php endif; ?>

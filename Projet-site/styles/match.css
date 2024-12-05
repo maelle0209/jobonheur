@@ -6,7 +6,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f4f4f4;
+    background-color:#fdf3e3;
     overflow: hidden; /* Empêche le défilement pendant les animations */
 }
 
