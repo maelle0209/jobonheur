@@ -109,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 if ($favoris) {
                     foreach ($favoris as $favori) {
-                        echo "<li onclick=\"window.location.href='match.php?job_id={$favori['job_id']}'\">";
+                        echo "<li onclick=\"window.location.href='fiche_poste.php?job_id={$favori['job_id']}'\">";
                         echo htmlspecialchars($favori['Intitulé du poste']) . " - " . htmlspecialchars($favori['Entreprise']);
                         echo "</li>";
                     }
