@@ -17,7 +17,7 @@ $bdd = getBD(); // Fonction pour se connecter à la base de données
 $jobId = isset($_GET['job_id']) ? $_GET['job_id'] : 1;
 
 // Récupérer l'offre actuelle
-$query = "SELECT `job_id`, `Intitulé du poste`, `Description`, `Ville`, `Type de contrat`, `salaire`, `Entreprise`, `lien` 
+$query = "SELECT `job_id`, `Intitulé du poste`, `Description`, `Ville`, `Type de contrat`, `salaire`, `Entreprise`, `lien`, `niveau libellé`,`compétences exigées`, `Qualité professionnelles`
           FROM response_2 WHERE `job_id` = ?";
 $stmt = $bdd->prepare($query);
 $stmt->execute([$jobId]);
@@ -59,60 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Offre d'Emploi</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
-             /* Empêche la barre de défilement pendant l'animation */
-            transition: transform 1s ease;
-        }
-        /* Animation pour les différentes actions */
-        body.favoris {
-            transform: translateX(100%); /* Déplace la page vers la droite */
-        }
+    <link rel="stylesheet" href="styles/match.css">
 
-        body.refus {
-            transform: translateX(-100%); /* Déplace la page vers la gauche */
-        }
-
-        .job-card {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .actions {
-            margin-top: 20px;
-        }
-
-        .action-btn {
-            background-color: #f0f0f0;
-            border: none;
-            padding: 10px;
-            border-radius: 50%;
-            margin: 0 20px;
-            cursor: pointer;
-        }
-
-        .action-btn:hover {
-            background-color: #ddd;
-        }
-        .heart {
-            color: red;
-        }
-        .cross {
-            color: #aaa;
-        }
-    </style>
 </head>
 <body>
     <div class="job-card">
@@ -121,7 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p><strong>Ville :</strong> <?= htmlspecialchars($job['Ville']) ?></p>
         <p><strong>Type de contrat :</strong> <?= htmlspecialchars($job['Type de contrat']) ?></p>
         <p><strong>Salaire :</strong> <?= htmlspecialchars($job['salaire']) ?: 'Non précisé' ?></p>
-        <p><?= nl2br(htmlspecialchars($job['Description'])) ?></p>
+        <p><strong>Niveau exigé :</strong> <?= htmlspecialchars($job['niveau libellé']) ?: 'Non précisé' ?></p>
+        <p><strong>Compétences exigées :</strong> <?= htmlspecialchars($job['compétences exigées']) ?: 'Non précisé' ?></p>
+        <p><strong>Qualitées professionnelles :</strong> <?= htmlspecialchars($job['Qualité professionnelles']) ?: 'Non précisé' ?></p>
+        <p><?= nl2br(htmlspecialchars($job['Description'])) ?></p> 
 
         <div class="actions">
             <!-- Formulaire pour gérer les actions (favoris ou refus) -->
@@ -131,5 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
         </div>
     </div>
+    <div class="header">
+        <a href="section.php" class="btn-retour">Retour à l'accueil</a>
+    </div>
+   
 </body>
 </html>
