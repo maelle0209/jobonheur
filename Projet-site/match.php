@@ -16,6 +16,19 @@ $bdd = getBD(); // Fonction pour se connecter à la base de données
 // Récupérer l'ID de l'offre de la requête, sinon prendre la première offre
 $jobId = isset($_GET['job_id']) ? $_GET['job_id'] : 1;
 
+// Vérifier si l'utilisateur a déjà vu un job et récupérer l'ID du dernier job vu
+$queryLastJob = "SELECT last_job_id FROM clients WHERE id_client = ?";
+$stmtLastJob = $bdd->prepare($queryLastJob);
+$stmtLastJob->execute([$userId]);
+$lastJob = $stmtLastJob->fetch();
+
+if ($lastJob && $lastJob['last_job_id']) {
+    $jobId = $lastJob['last_job_id']; // Si l'utilisateur a déjà un dernier job vu, on l'affiche
+} else {
+    // Sinon, on prend la première offre par défaut
+    $jobId = 1;
+}
+
 // Récupérer l'offre actuelle
 $query = "SELECT `job_id`, `Intitulé du poste`, `Description`, `Ville`, `Type de contrat`, `salaire`, `Entreprise`, `lien`, `niveau libellé`,`compétences exigées`, `Qualité professionnelles`
           FROM response_2 WHERE `job_id` = ?";
@@ -28,27 +41,42 @@ if (!$job) {
     echo 'Aucune offre trouvée.';
     exit;
 }
-// Enregistrer le favori ou refuser l'offre
+/// Récupérer l'ID du job suivant (l'ID du job actuel + 1 ou par une autre méthode)
+$nextJobId = $jobId + 1; // Exemple pour passer au job suivant par ID
+$queryNextJob = "SELECT job_id FROM response_2 WHERE job_id = ?";
+$stmtNextJob = $bdd->prepare($queryNextJob);
+$stmtNextJob->execute([$nextJobId]);
+$nextJob = $stmtNextJob->fetch();
+
+if (!$nextJob) {
+    // Si l'ID suivant n'existe pas, prenez l'ID du premier job
+    $nextJobId = 1;
+}
+
+// Maintenant, vous pouvez utiliser $nextJobId pour la redirection après avoir refusé l'offre
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_POST['action'] === 'favoris') {
         // Ajouter aux favoris
         $favQuery = "INSERT INTO favoris (user_id, job_id) VALUES (?, ?)";
         $stmt = $bdd->prepare($favQuery);
         $stmt->execute([$userId, $jobId]);
-        $nextJobId = $jobId + 1; // Exemple de logique pour passer à l'offre suivante
+
+        // Mise à jour du dernier job vu
+        $queryUpdate = "UPDATE clients SET last_job_id = ? WHERE id_client = ?";
+        $stmtUpdate = $bdd->prepare($queryUpdate);
+        $stmtUpdate->execute([$nextJobId, $userId]);
+
+        // Rediriger vers le prochain job
         header("Location: match.php?job_id=$nextJobId");
+        exit; // Assurez-vous que la redirection s'arrête ici
     } elseif ($_POST['action'] === 'refus') {
+        $queryUpdate = "UPDATE clients SET last_job_id = ? WHERE id_client = ?";
+        $stmtUpdate = $bdd->prepare($queryUpdate);
+        $stmtUpdate->execute([$nextJobId, $userId]);
         // Passer à l'offre suivante
-        $nextJobId = $jobId + 1; // Exemple de logique pour passer à l'offre suivante
-        header("Location: match.php?job_id=$nextJobId"); // Rediriger vers la prochaine offre
-        exit;
+        header("Location: match.php?job_id=$nextJobId");
+        exit; // Assurez-vous que la redirection s'arrête ici
     }
-    echo "<script>
-    document.body.classList.add('$action');
-    setTimeout(function() {
-        window.location = 'match.php?job_id=$nextJobId';
-    }, 1000); // Attend que l'animation soit terminée avant la redirection
-</script>";
 }
 
 ?>
@@ -63,30 +91,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 </head>
 <body>
-<div class="job-card">
-    <div class="action-indicator"></div> <!-- Indicateur d'animation -->
-    <h2><?= htmlspecialchars($job['Intitulé du poste']) ?></h2>
-    <p><strong>Entreprise :</strong> <?= htmlspecialchars($job['Entreprise']) ?: 'Non spécifiée' ?></p>
-    <p><strong>Ville :</strong> <?= htmlspecialchars($job['Ville']) ?></p>
-    <p><strong>Type de contrat :</strong> <?= htmlspecialchars($job['Type de contrat']) ?></p>
-    <p><strong>Salaire :</strong> <?= htmlspecialchars($job['salaire']) ?: 'Non précisé' ?></p>
-    <p><strong>Niveau exigé :</strong> <?= htmlspecialchars($job['niveau libellé']) ?: 'Non précisé' ?></p>
-    <p><strong>Compétences exigées :</strong> <?= htmlspecialchars($job['compétences exigées']) ?: 'Non précisé' ?></p>
-    <p><strong>Qualitées professionnelles :</strong> <?= htmlspecialchars($job['Qualité professionnelles']) ?: 'Non précisé' ?></p>
-    <p><?= nl2br(htmlspecialchars($job['Description'])) ?></p>
+    <div class="container">
+        <!-- Section des favoris -->
+        <div class="favorites">
+            <h2>Vos Favoris</h2>
+            <ul>
+                <?php
+                // Récupérer les favoris pour l'utilisateur connecté
+                $favQuery = "SELECT favoris.job_id, `Intitulé du poste`, `Entreprise` 
+             FROM favoris 
+             JOIN response_2 ON favoris.job_id = response_2.job_id
+             WHERE favoris.user_id = ?";
+             $stmt = $bdd->prepare($favQuery);
+             $stmt->execute([$userId]);
+             $favoris = $stmt->fetchAll();
 
-    <div class="actions">
-        <!-- Boutons modernisés -->
-        <form method="POST">
-            <button type="submit" name="action" value="refus" class="action-btn cross">❌</button>
-            <button type="submit" name="action" value="favoris" class="action-btn heart">❤️</button>
-        </form>
-    </div>
-</div>
 
-    
-    <div class="header">
-        <a href="section.php" class="btn-retour">Retour à l'accueil</a>
+                if ($favoris) {
+                    foreach ($favoris as $favori) {
+                        echo "<li onclick=\"window.location.href='match.php?job_id={$favori['job_id']}'\">";
+                        echo htmlspecialchars($favori['Intitulé du poste']) . " - " . htmlspecialchars($favori['Entreprise']);
+                        echo "</li>";
+                    }
+                } else {
+                    echo "<li>Aucun favori pour l'instant.</li>";
+                }
+                ?>
+            </ul>
+        </div>
+
+        <!-- Section de l'offre actuelle -->
+        <div class="job-container">
+            <div class="job-card">
+                <h2><?= htmlspecialchars($job['Intitulé du poste']) ?></h2>
+                <p><strong>Entreprise :</strong> <?= htmlspecialchars($job['Entreprise']) ?: 'Non spécifiée' ?></p>
+                <p><strong>Ville :</strong> <?= htmlspecialchars($job['Ville']) ?></p>
+                <p><strong>Type de contrat :</strong> <?= htmlspecialchars($job['Type de contrat']) ?></p>
+                <p><strong>Salaire :</strong> <?= htmlspecialchars($job['salaire']) ?: 'Non précisé' ?></p>
+                <p><strong>Niveau exigé :</strong> <?= htmlspecialchars($job['niveau libellé']) ?: 'Non précisé' ?></p>
+                <p><strong>Compétences exigées :</strong> <?= htmlspecialchars($job['compétences exigées']) ?: 'Non précisé' ?></p>
+                <p><strong>Qualités professionnelles :</strong> <?= htmlspecialchars($job['Qualité professionnelles']) ?: 'Non précisé' ?></p>
+                <p><?= nl2br(htmlspecialchars($job['Description'])) ?></p> 
+
+                <div class="actions">
+                    <!-- Formulaire pour gérer les actions (favoris ou refus) -->
+                    <form method="POST">
+                        <button type="submit" name="action" value="refus" class="action-btn cross">❌</button>
+                        <button type="submit" name="action" value="favoris" class="action-btn heart">❤️</button>
+                    </form>
+                </div>
+            </div>
+            <div class="header">
+                <a href="section.php" class="btn-retour">Retour à l'accueil</a>
+            </div>
+        </div>
     </div>
 
     <script>
