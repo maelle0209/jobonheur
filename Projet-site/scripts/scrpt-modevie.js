@@ -4,7 +4,7 @@ const resultsPerPage = 5; // Nombre de résultats par page
 
 // Fonction pour charger et analyser le fichier CSV
 function loadCSV() {
-  fetch('dataa.csv') // Remplacez par le chemin réel du fichier CSV
+  fetch('dataa.csv') //  le chemin  du fichier CSV
     .then(response => response.text())
     .then(csvText => {
       Papa.parse(csvText, {
