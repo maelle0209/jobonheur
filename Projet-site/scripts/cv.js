@@ -100,3 +100,4 @@ downloadBtn.addEventListener('click', () => {
         pdf.save("CV.pdf");
     }
 });
+
