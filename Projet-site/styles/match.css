@@ -9,6 +9,9 @@ body {
     justify-content: center;
     align-items: flex-start;
     height: 100vh;
+    margin: 0;
+    background-color:#fdf3e3;
+    overflow: hidden; /* Empêche le défilement pendant les animations */
 }
 
 .container {
