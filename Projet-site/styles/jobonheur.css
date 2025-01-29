@@ -152,3 +152,63 @@ footer {
       font-size: 1.3rem;
    }
 }
+
+.reviews-section {
+   margin: 40px auto;
+   width: 50%;
+   text-align: center;
+}
+
+.rating {
+   font-size: 24px;
+   cursor: pointer;
+}
+
+.star {
+   color: #ccc;
+   transition: color 0.3s;
+}
+
+.star:hover,
+.star:hover ~ .star {
+   color: #f5c518;
+}
+
+.review-form {
+   margin-top: 20px;
+}
+
+#review-text {
+   width: 100%;
+   height: 80px;
+   padding: 10px;
+   margin-top: 10px;
+   border: 1px solid #ddd;
+   border-radius: 5px;
+}
+
+#submit-review {
+   display: block;
+   margin: 10px auto;
+   padding: 10px 20px;
+   background-color: #f5c518;
+   color: white;
+   border: none;
+   cursor: pointer;
+   border-radius: 5px;
+}
+
+#submit-review:hover {
+   background-color: #218838;
+}
+
+.review-item {
+   border-bottom: 1px solid #ddd;
+   padding: 10px 0;
+   margin: 10px 0;
+}
+
+.review-stars {
+   font-size: 20px;
+   color: #f5c518;
+}

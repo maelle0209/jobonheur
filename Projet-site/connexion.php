@@ -1,3 +1,10 @@
+<?php
+session_start();
+echo "Client connecté : " . $_SESSION['client_id'];
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -26,3 +33,6 @@
 
 </body>
 </html>
+
+
+

@@ -14,12 +14,11 @@ if (isset($_POST['mail']) && isset($_POST['mdp'])) {
     $client = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($client && password_verify($motDePasse, $client['mdp'])) {
-        $_SESSION['client'] = [
-            'id' => $client['id_client'],
-            'nom' => $client['nom'],
-            'prenom' => $client['prenom'],
-            'email' => $client['mail']
-        ];
+        $_SESSION['client_id'] = $client['id_client']; // Stocke l'ID directement
+        $_SESSION['client_nom'] = $client['nom'];
+        $_SESSION['client_prenom'] = $client['prenom'];
+        $_SESSION['client_email'] = $client['mail'];
+
         header('Location: section.php');
         exit;
     } else {
