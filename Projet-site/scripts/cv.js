@@ -36,10 +36,15 @@ downloadBtn.addEventListener('click', () => {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
 
+    // Couleurs (RGB)
+    const primaryColor = [0, 123, 255]; // Bleu
+    const sectionBgColor = [240, 248, 255]; // Bleu clair
+
     // Coordonnées initiales
     let y = 20;
 
     // Ajout du titre
+    pdf.setTextColor(...primaryColor);
     pdf.setFontSize(16);
     pdf.text("CV", 105, y, { align: "center" });
 
@@ -51,8 +56,8 @@ downloadBtn.addEventListener('click', () => {
         const reader = new FileReader();
         reader.onload = function (e) {
             const imgData = e.target.result;
-            pdf.addImage(imgData, 'JPEG', 10, y, 40, 40); // Position x, y, largeur, hauteur
-            generatePDFContent(y + 50); // Décale le contenu
+            pdf.addImage(imgData, 'JPEG', 10, y, 40, 40);
+            generatePDFContent(y + 50);
         };
         reader.readAsDataURL(photo);
     } else {
@@ -62,6 +67,7 @@ downloadBtn.addEventListener('click', () => {
     function generatePDFContent(startY) {
         y = startY;
 
+        pdf.setTextColor(0, 0, 0);
         pdf.setFontSize(12);
         pdf.text(`Nom: ${document.getElementById('preview-name').textContent}`, 60, y);
         y += 10;
@@ -72,32 +78,23 @@ downloadBtn.addEventListener('click', () => {
         pdf.text(`Contact: ${document.getElementById('preview-contact').textContent}`, 60, y);
         y += 20;
 
-        pdf.setFontSize(14);
-        pdf.text("Expérience:", 10, y);
-        pdf.setFontSize(12);
-        pdf.text(document.getElementById('preview-experience').textContent, 20, y + 10);
-        y += 30;
+        addSection("Expérience", document.getElementById('preview-experience').textContent);
+        addSection("Compétences", document.getElementById('preview-skills').textContent);
+        addSection("Éducation", document.getElementById('preview-education').textContent);
+        addSection("Langues", document.getElementById('preview-languages').textContent);
 
-        pdf.setFontSize(14);
-        pdf.text("Compétences:", 10, y);
-        pdf.setFontSize(12);
-        pdf.text(document.getElementById('preview-skills').textContent, 20, y + 10);
-        y += 30;
-
-        pdf.setFontSize(14);
-        pdf.text("Éducation:", 10, y);
-        pdf.setFontSize(12);
-        pdf.text(document.getElementById('preview-education').textContent, 20, y + 10);
-        y += 30;
-
-        pdf.setFontSize(14);
-        pdf.text("Langues:", 10, y);
-        pdf.setFontSize(12);
-        pdf.text(document.getElementById('preview-languages').textContent, 20, y + 10);
-        y += 30;
-
-        // Sauvegarde le fichier PDF
         pdf.save("CV.pdf");
     }
-});
 
+    function addSection(title, content) {
+        pdf.setFillColor(...sectionBgColor);
+        pdf.rect(10, y - 5, 190, 10, "F"); // Fond coloré
+        pdf.setTextColor(...primaryColor);
+        pdf.setFontSize(14);
+        pdf.text(title + ":", 10, y);
+        pdf.setTextColor(0, 0, 0);
+        pdf.setFontSize(12);
+        pdf.text(content, 20, y + 10);
+        y += 30;
+    }
+});
