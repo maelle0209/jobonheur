@@ -56,8 +56,10 @@ downloadBtn.addEventListener('click', () => {
         const reader = new FileReader();
         reader.onload = function (e) {
             const imgData = e.target.result;
-            pdf.addImage(imgData, 'JPEG', 10, y, 40, 40);
-            generatePDFContent(y + 50);
+            pdf.setFillColor(255, 255, 255);
+            pdf.circle(30, y + 20, 20, "F"); // Cercle blanc pour masquer
+            pdf.addImage(imgData, 'JPEG', 10, y, 40, 40, '', '', 0, 'FAST');
+            generatePDFContent(y);
         };
         reader.readAsDataURL(photo);
     } else {
@@ -66,17 +68,15 @@ downloadBtn.addEventListener('click', () => {
 
     function generatePDFContent(startY) {
         y = startY;
+        let textX = 60;
 
         pdf.setTextColor(0, 0, 0);
         pdf.setFontSize(12);
-        pdf.text(`Nom: ${document.getElementById('preview-name').textContent}`, 60, y);
-        y += 10;
+        pdf.text(`Nom: ${document.getElementById('preview-name').textContent}`, textX, y + 10);
+        pdf.text(`Titre: ${document.getElementById('preview-title').textContent}`, textX, y + 20);
+        pdf.text(`Contact: ${document.getElementById('preview-contact').textContent}`, textX, y + 30);
 
-        pdf.text(`Titre: ${document.getElementById('preview-title').textContent}`, 60, y);
-        y += 10;
-
-        pdf.text(`Contact: ${document.getElementById('preview-contact').textContent}`, 60, y);
-        y += 20;
+        y += 50;
 
         addSection("Expérience", document.getElementById('preview-experience').textContent);
         addSection("Compétences", document.getElementById('preview-skills').textContent);
