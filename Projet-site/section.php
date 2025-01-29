@@ -19,6 +19,8 @@ session_start(); //  Important pour récupérer les infos de session
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Section</title>
     <link rel="stylesheet" href="styles/section.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
 </head>
 <body>
 
@@ -39,8 +41,8 @@ session_start(); //  Important pour récupérer les infos de session
         <a href="statistiques.html" class="btn-option">Statistique</a>
     </div>
 <!-- Icône pour ajouter un avis -->
-<div class="review-icon">
-    <button onclick="openReviewModal()">⭐ Donner mon avis</button>
+<div class="review-icon" onclick="openReviewModal()">
+    <i class="fas fa-star"></i> <!-- Icône étoile FontAwesome -->
 </div>
 
 <!-- Fenêtre modale pour soumettre un avis -->
