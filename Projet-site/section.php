@@ -8,9 +8,9 @@
 </head>
 <body>
 
-    <!-- Bouton de retour à l'accueil -->
+    <!-- Déconnexion -->
     <div class="header">
-        <a href="jobonheur.php" class="btn-retour">Retour à l'accueil</a>
+        <a href="jobonheur.php" class="btn-retour">Déconnexion</a>
     </div>
 
     <!-- Message de connexion réussi -->
