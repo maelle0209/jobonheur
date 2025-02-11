@@ -38,33 +38,32 @@
     <script>
         // Fonction pour afficher les statistiques et leur interprétation
         function showStat(option) {
-            const imageElement = document.getElementById('stat-image');
+            const resultDiv = document.getElementById('stat-result');
             const interpretationDiv = document.getElementById('stat-interpretation');
 
-            // Variables pour l'image et l'interprétation
-            let imageSrc = '';
+            // Variables pour le fichier HTML et l'interprétation
+            let graphSrc = '';
             let interpretationText = '';
 
-            // Déterminer l'image et l'interprétation à afficher
+            // Déterminer le fichier HTML et l'interprétation
             if (option === 'sexe') {
-                imageSrc = 'images/sexe.png';
+                graphSrc = 'graphs/graphique_sexe.html';
                 interpretationText = 'Cette statistique montre les taux de chômage en fonction du sexe. On peut observer une différence notable entre les hommes et les femmes selon les secteurs.';
             } else if (option === 'age') {
-                imageSrc = 'images/age.png';
+                graphSrc = 'graphs/graphique_age.html';
                 interpretationText = 'Cette statistique illustre les taux de chômage selon les tranches d’âge. Les jeunes adultes sont souvent les plus touchés par le chômage.';
             } else if (option === 'diplome') {
-                imageSrc = 'images/niveau de diplome.png';
+                graphSrc = 'graphs/graphique_diplome.html';
                 interpretationText = 'Cette statistique analyse l’impact du niveau de diplôme sur le chômage. Les individus moins diplômés sont souvent plus vulnérables.';
             }
 
-            // Mettre à jour l'image
-            imageElement.src = imageSrc;
-            imageElement.alt = interpretationText;
-
-            // Afficher l'image et l'interprétation
-            imageElement.style.display = 'block'; // Rendre visible l'image
-            interpretationDiv.innerHTML = `<p>${interpretationText}</p>`;
+            // Mettre à jour l'affichage avec un iframe
+            resultDiv.innerHTML = `
+                <iframe src="${graphSrc}" width="100%" height="500px" style="border:none;"></iframe>
+                <div class="stat-interpretation"><p>${interpretationText}</p></div>
+            `;
         }
+
     </script>
 
 </body>
