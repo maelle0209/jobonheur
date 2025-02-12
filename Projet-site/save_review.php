@@ -19,7 +19,7 @@ try {
     $stmt = $bdd->prepare("INSERT INTO reviews (client_id, rating, comment, created_at) VALUES (?, ?, ?, NOW())");
     $stmt->execute([$client_id, $rating, $comment]);
 
-    echo "✅ Avis enregistré avec succès !";
+    echo "✅ Avis enregistré avec succès ! Redirection en cours...";
     header("refresh: 2; url=section.php"); // Redirection après 2 secondes
     exit();
 } catch (Exception $e) {
