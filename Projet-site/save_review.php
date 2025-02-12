@@ -20,6 +20,8 @@ try {
     $stmt->execute([$client_id, $rating, $comment]);
 
     echo "✅ Avis enregistré avec succès !";
+    header("refresh: 2; url=section.php"); // Redirection après 2 secondes
+    exit();
 } catch (Exception $e) {
     echo "❌ Erreur : " . $e->getMessage();
 }
