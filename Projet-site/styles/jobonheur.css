@@ -1,18 +1,18 @@
-/* Général */
-body {
+ /* --- Général --- */
+ body {
    font-family: 'Arial', sans-serif;
    margin: 0;
    padding: 0;
-   background-color: #fdf3e3; /* Couleur de fond douce */
+   background-color: #fdf3e3;
    scroll-behavior: smooth;
    line-height: 1.6;
-   overflow-x: hidden; /* Empêche le défilement horizontal */
-}
+   overflow-x: hidden;
+ }
 
-/* Landing Section */
-.landing {
+ /* --- Landing Section --- */
+ .landing {
    position: relative;
-   background-image: url('../images/photo.jpg'); /* Ton image de fond */
+   background-image: url('../images/photo.jpg');
    background-size: cover;
    background-position: center;
    height: 100vh;
@@ -23,41 +23,27 @@ body {
    color: white;
    flex-direction: column;
    padding: 20px;
-}
-
-.landing .overlay {
-   position: absolute;
-   top: 0;
-   left: 0;
-   right: 0;
-   bottom: 0;
-   background-color: rgba(0, 0, 0, 0.6); /* Couverture sombre pour améliorer la lisibilité */
-   z-index: 1;
-}
-
-.landing h1 {
+ }
+ .landing h1 {
    font-size: 6rem;
    margin-bottom: 10px;
-   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9); /* Ombre portée pour la lisibilité */
+   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
    font-weight: bold;
-   margin-top: -100px; /* Décale le titre vers le haut */
-}
-
-.landing p {
+   margin-top: -100px;
+ }
+ .landing p {
    font-size: 1.6rem;
    margin-top: -20px;
    margin-bottom: 280px;
-   text-shadow: 3px 3px 9px rgba(0, 0, 0, 0.9); /* Ombre douce */
-}
-
-.buttons {
+   text-shadow: 3px 3px 9px rgba(0, 0, 0, 0.9);
+ }
+ .buttons {
    display: flex;
    gap: 60px;
    justify-content: center;
    margin-top: 30px;
-}
-
-.btn {
+ }
+ .btn {
    background-color: #f04a00;
    color: white;
    padding: 15px 30px;
@@ -65,62 +51,62 @@ body {
    font-size: 1.2rem;
    border-radius: 8px;
    transition: background-color 0.3s ease, transform 0.3s ease;
-   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Ombre subtile */
-}
-
-.btn:hover {
+   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+ }
+ .btn:hover {
    background-color: #d93e00;
-   transform: scale(1.1); /* Légère augmentation de la taille au survol */
-}
+   transform: scale(1.1);
+ }
 
-.nouveau-link {
-   color: #f0d000;
-   text-decoration: underline;
-   font-weight: bold;
-}
-
-.nouveau-link:hover {
-   color: #f0e3a7;
-}
-
-/* Section Information */
-.info-section {
+ /* --- Information Section --- */
+ .info-section {
    display: flex;
    justify-content: space-around;
    padding: 50px 20px;
    background-color: #fff4db;
    gap: 30px;
-}
-
-.info-box {
+ }
+ .info-box {
    background-color: white;
    padding: 25px;
    border-radius: 12px;
    width: 30%;
    text-align: center;
-   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); /* Ombre plus marquée */
+   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.info-box:hover {
+ }
+ .info-box:hover {
    transform: translateY(-10px);
-   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Ombre plus profonde au survol */
-}
-
-.info-box h3 {
+   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+ }
+ .info-box h3 {
    margin-bottom: 20px;
    font-size: 1.7rem;
    color: #f04a00;
    font-weight: bold;
-}
-
-.info-box p {
+ }
+ .info-box p {
    font-size: 1.1rem;
    color: #333;
-}
+ }
 
-/* Footer Section */
-footer {
+ /* --- Reviews Section --- */
+ .reviews {
+   background: #f9f9f9;
+   padding: 20px;
+   border-radius: 10px;
+   margin-top: 20px;
+ }
+ .review {
+   border-bottom: 1px solid #ddd;
+   padding: 10px 0;
+ }
+ .review p {
+   margin: 5px 0;
+ }
+
+ /* --- Footer --- */
+ footer {
    text-align: center;
    padding: 30px;
    background-color: #f04a00;
@@ -130,85 +116,128 @@ footer {
    bottom: 0;
    font-size: 1rem;
    letter-spacing: 0.5px;
-}
+ }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+ /* --- Responsive --- */
+ @media (max-width: 768px) {
    .info-section {
-      flex-direction: column;
-      padding: 20px;
+     flex-direction: column;
+     padding: 20px;
    }
-
    .info-box {
-      width: 80%;
-      margin-bottom: 20px;
+     width: 80%;
+     margin-bottom: 20px;
    }
-
    .landing h1 {
-      font-size: 3rem;
+     font-size: 3rem;
    }
-
    .landing p {
-      font-size: 1.3rem;
+     font-size: 1.3rem;
    }
-}
+ }
 
-.reviews-section {
-   margin: 40px auto;
-   width: 50%;
-   text-align: center;
-}
-
-.rating {
-   font-size: 24px;
+ /* --- Chatbot Styles --- */
+ #chatbot-toggle {
+   position: fixed;
+   bottom: 20px;
+   right: 20px;
+   width: 70px;
+   height: 70px;
+   background-color: #f04a00;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
    cursor: pointer;
-}
-
-.star {
-   color: #ccc;
-   transition: color 0.3s;
-}
-
-.star:hover,
-.star:hover ~ .star {
-   color: #f5c518;
-}
-
-.review-form {
-   margin-top: 20px;
-}
-
-#review-text {
-   width: 100%;
-   height: 80px;
-   padding: 10px;
-   margin-top: 10px;
+   z-index: 9999;
+   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+   transition: transform 0.3s ease;
+ }
+ #chatbot-toggle:hover {
+   transform: scale(1.1);
+ }
+ #chatbot-toggle i {
+   color: white;
+   font-size: 32px;
+ }
+ /* Chat bubble (élément interne) */
+ #chat-bubble {
+   position: absolute;
+   bottom: -5px;
+   right: -5px;
+   width: 30px;
+   height: 30px;
+   background: white;
+   color: #f04a00;
+   border-radius: 50%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+ }
+ #chat-bubble i {
+   font-size: 16px;
+ }
+ /* Chat container */
+ #chat-container {
+   position: fixed;
+   bottom: 100px;
+   right: 20px;
+   width: 350px;
+   height: 400px;
+   background: white;
    border: 1px solid #ddd;
-   border-radius: 5px;
-}
-
-#submit-review {
-   display: block;
-   margin: 10px auto;
-   padding: 10px 20px;
-   background-color: #f5c518;
+   border-radius: 10px;
+   display: none;
+   z-index: 9999;
+   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+ }
+ #chat-box {
+   height: 300px;
+   overflow-y: auto;
+   padding: 10px;
+ }
+ #chat-input {
+   width: 75%;
+   padding: 10px;
+   border: none;
+   border-top: 1px solid #ddd;
+ }
+ #chat-container button {
+   width: 25%;
+   padding: 10px;
+   background: #f04a00;
    color: white;
    border: none;
    cursor: pointer;
-   border-radius: 5px;
-}
-
-#submit-review:hover {
-   background-color: #218838;
-}
-
-.review-item {
+ }
+ #chat-container button:hover {
+   background: #d93e00;
+ }
+/* Style pour la section FAQ */
+#faq {
+   background: #fff4db;
+   padding: 10px;
    border-bottom: 1px solid #ddd;
-   padding: 10px 0;
-   margin: 10px 0;
-}
-
-.review-stars {
-   font-size: 20px;
-   color: #f5c518;
-}
+   margin-bottom: 10px;
+ }
+ #faq h3 {
+   margin: 0 0 10px 0;
+   font-size: 1.1rem;
+   color: #f04a00;
+ }
+ #faq ul {
+   list-style: none;
+   padding: 0;
+   margin: 0;
+ }
+ #faq ul li {
+   padding: 5px 0;
+   cursor: pointer;
+   border-bottom: 1px dashed #ddd;
+   font-size: 0.95rem;
+ }
+ #faq ul li:hover {
+   color: #d93e00;
+ }
+ 
