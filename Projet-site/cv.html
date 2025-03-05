@@ -20,32 +20,52 @@
         <!-- Formulaire pour entrer les informations -->
         <section class="form-section">
             <h2>Informations Personnelles</h2>
-            <form id="cv-form">
-                <label for="name"><i class="fas fa-user"></i> Nom complet:</label>
-                <input type="text" id="name" placeholder="Votre nom complet" required>
+            <form id="cv-form" action="save_cv.php" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>">
 
-                <label for="title"><i class="fas fa-briefcase"></i> Titre professionnel:</label>
-                <input type="text" id="title" placeholder="Exemple: Développeur Web">
+                <label for="name"><i class="fas fa-user"></i> Nom complet :</label>
+                <input type="text" id="name" name="name" placeholder="Votre nom complet" value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>" required>
+            
+                <label for="title"><i class="fas fa-briefcase"></i> Titre professionnel :</label>
+                <input type="text" id="title" name="title" placeholder="Exemple : Développeur Web" value="<?php echo isset($_POST['title']) ? htmlspecialchars($_POST['title']) : ''; ?>">
+            
+                <label for="age_category"><i class="fas fa-calendar"></i> Catégorie d'âge :</label>
+                <select id="age_category" name="age_category">
+                    <option value="15_24">15 à 24 ans</option>
+                    <option value="25_49">25 à 49 ans</option>
+                    <option value="50_plus">50 ans et plus</option>
+                </select>
+            
+                <label for="education_level"><i class="fas fa-graduation-cap"></i> Niveau de diplôme :</label>
+                <select id="education_level" name="education_level">
+                    <option value="aucun_diplome">Aucun diplôme</option>
+                    <option value="cap_bep">CAP / BEP</option>
+                    <option value="baccalaureat">Baccalauréat</option>
+                    <option value="bac_plus_2">Bac +2</option>
+                    <option value="bac_plus_3">Bac +3 et plus</option>
+                </select>
+            
+                <label for="photo"><i class="fas fa-image"></i> Photo de profil :</label>
+                <input type="file" id="photo" name="photo" accept="image/*">
+            
+                <label for="education"><i class="fas fa-graduation-cap"></i> Éducation :</label>
+                <textarea id="education" name="education" placeholder="Décrivez votre parcours éducatif (Écoles, diplômes, années)"><?php echo isset($_POST['education']) ? htmlspecialchars($_POST['education']) : ''; ?></textarea>
+            
+                <label for="experience"><i class="fas fa-history"></i> Expérience :</label>
+                <textarea id="experience" name="experience" placeholder="Décrivez votre expérience..."><?php echo isset($_POST['experience']) ? htmlspecialchars($_POST['experience']) : ''; ?></textarea>
+            
+                <label for="skills"><i class="fas fa-tools"></i> Compétences :</label>
+                <input type="text" id="skills" name="skills" placeholder="Compétences séparées par des virgules" value="<?php echo isset($_POST['skills']) ? htmlspecialchars($_POST['skills']) : ''; ?>">
+            
+                <label for="languages"><i class="fas fa-language"></i> Langues :</label>
+                <input type="text" id="languages" name="languages" placeholder="Exemple : Français, Anglais, Espagnol"value="<?php echo isset($_POST['languages']) ? htmlspecialchars($_POST['languages']) : ''; ?>">
+            
+                <label for="contact"><i class="fas fa-envelope"></i> Contact (Email / Téléphone) :</label>
+                <input type="text" id="contact" name="contact" placeholder="exemple@mail.com / 0123456789" value="<?php echo isset($_POST['contact']) ? htmlspecialchars($_POST['contact']) : ''; ?>">
+            
 
-                <label for="photo"><i class="fas fa-image"></i> Photo de profil:</label>
-                <input type="file" id="photo" accept="image/*">
-
-                <label for="education"><i class="fas fa-graduation-cap"></i> Éducation:</label>
-                <textarea id="education" placeholder="Décrivez votre parcours éducatif (Écoles, diplômes, années)"></textarea>
-
-                <label for="experience"><i class="fas fa-history"></i> Expérience:</label>
-                <textarea id="experience" placeholder="Décrivez votre expérience..."></textarea>
-
-                <label for="skills"><i class="fas fa-tools"></i> Compétences:</label>
-                <input type="text" id="skills" placeholder="Compétences séparées par des virgules">
-
-                <label for="languages"><i class="fas fa-language"></i> Langues:</label>
-                <input type="text" id="languages" placeholder="Exemple: Français, Anglais, Espagnol">
-
-                <label for="contact"><i class="fas fa-envelope"></i> Contact (Email / Téléphone):</label>
-                <input type="text" id="contact" placeholder="exemple@mail.com / 0123456789">
-
-                <button type="button" id="preview-btn">Voir un aperçu</button>
+                <button type="submit">Enregistrer le CV</button>
+                <button type="button" id="preview-btn">Aperçu</button>
             </form>
         </section>
 

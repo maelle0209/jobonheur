@@ -34,6 +34,14 @@ media="screen" />
         <input type="password" id="password2" name="mdp2">
      </p>
      <p>
+         <label>Sexe :</label>
+         <input type="radio" id="homme" name="sexe" value="Homme" required>
+         <label for="homme">Homme</label>
+         <input type="radio" id="femme" name="sexe" value="Femme">
+         <label for="femme">Femme</label>
+      </p>
+
+     <p>
         <input type="submit" value="Envoyer">
      </p>
 </form>

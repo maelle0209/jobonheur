@@ -95,6 +95,6 @@ downloadBtn.addEventListener('click', () => {
         pdf.setTextColor(0, 0, 0);
         pdf.setFontSize(12);
         pdf.text(content, 20, y + 10);
-        y += 30;
-    }
+        y += 30;
+    }
 });

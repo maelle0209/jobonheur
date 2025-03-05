@@ -35,7 +35,7 @@ session_start(); //  Important pour récupérer les infos de session
     
     <!-- Section des options -->
     <div class="option-section">
-        <a href="cv.html" class="btn-option">CV</a>
+        <a href="cv.php" class="btn-option">CV</a>
         <a href="match.php" class="btn-option">Match</a>
         <a href="modevie.html" class="btn-option">Découvre ton métier</a>
         <a href="statistiques.html" class="btn-option">Statistique</a>

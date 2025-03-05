@@ -1,0 +1,120 @@
+<?php
+session_start();
+include('bd.php');  // Inclus ta connexion à la base de données
+$pdo = getBD();
+// Récupérer les données depuis la base
+$stmt = $pdo->prepare('SELECT * FROM cv WHERE id_client = ?');
+$stmt->execute([$_SESSION['client_id']]);
+$user_data = $stmt->fetch();
+
+// Afficher les données dans le formulaire
+?>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Constructeur de CV</title>
+    <link rel="stylesheet" href="styles/cv.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>Constructeur de CV</h1>
+            <a href="section.php" class="back-home-button">Retour à l'accueil</a>
+        </div>
+        <p>Concevez votre CV de manière professionnelle et élégante.</p>
+    </header>
+    <main>
+        <!-- Formulaire pour entrer les informations -->
+        <section class="form-section">
+            <h2>Informations Personnelles</h2>
+            <form id="cv-form" action="save_cv.php" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="id_client" value="<?php echo $_SESSION['client_id']; ?>">
+
+                <label for="name"><i class="fas fa-user"></i> Nom complet :</label>
+                <input type="text" id="name" name="name" placeholder="Votre nom complet" value="<?php echo htmlspecialchars($user_data['name']); ?>" required>
+            
+                <label for="title"><i class="fas fa-briefcase"></i> Titre professionnel :</label>
+                <input type="text" id="title" name="title" placeholder="Exemple : Développeur Web" value="<?php echo htmlspecialchars($user_data['title']); ?>">
+            
+                <label for="age_category"><i class="fas fa-calendar"></i> Catégorie d'âge :</label>
+                <select id="age_category" name="age_category">
+                    <option value="15_24">15 à 24 ans</option>
+                    <option value="25_49">25 à 49 ans</option>
+                    <option value="50_plus">50 ans et plus</option>
+                </select>
+            
+                <label for="education_level"><i class="fas fa-graduation-cap"></i> Niveau de diplôme :</label>
+                <select id="education_level" name="education_level">
+                    <option value="aucun_diplome">Aucun diplôme</option>
+                    <option value="cap_bep">CAP / BEP</option>
+                    <option value="baccalaureat">Baccalauréat</option>
+                    <option value="bac_plus_2">Bac +2</option>
+                </select>
+            
+                <label for="photo"><i class="fas fa-image"></i> Photo de profil :</label>
+                <input type="file" id="photo" name="photo" accept="image/*">
+            
+                <textarea id="education" name="education" placeholder="Décrivez votre parcours éducatif (Écoles, diplômes, années)"><?php echo htmlspecialchars($user_data['education']); ?></textarea>
+
+                <label for="experience"><i class="fas fa-history"></i> Expérience :</label>
+                <textarea id="experience" name="experience" placeholder="Décrivez votre expérience..."><?php echo htmlspecialchars($user_data['experience']); ?></textarea>
+            
+                <label for="skills"><i class="fas fa-tools"></i> Compétences :</label>
+                <input type="text" id="skills" name="skills" placeholder="Compétences séparées par des virgules" value="<?php echo htmlspecialchars($user_data['skills']); ?>">
+            
+                <label for="languages"><i class="fas fa-language"></i> Langues :</label>
+                <input type="text" id="languages" name="languages" placeholder="Exemple : Français, Anglais, Espagnol"value="<?php echo htmlspecialchars($user_data['languages']); ?>">
+            
+                <label for="contact"><i class="fas fa-envelope"></i> Contact (Email / Téléphone) :</label>
+                <input type="text" id="contact" name="contact" placeholder="exemple@mail.com / 0123456789" value="<?php echo htmlspecialchars($user_data['contact']); ?>">
+            
+
+                <button type="submit">Enregistrer le CV</button>
+                <button type="button" id="preview-btn">Aperçu</button>
+            </form>
+        </section>
+
+        <!-- Aperçu en temps réel -->
+        <section class="preview-section">
+            <h2>Aperçu du CV</h2>
+            <div id="cv-preview">
+                <div class="cv-header">
+                    <img id="preview-photo" src="default-photo.png" alt="Photo de profil">
+                    <div class="cv-header-info">
+                        <h2 id="preview-name">Votre nom ici</h2>
+                        <h3 id="preview-title">Titre professionnel</h3>
+                        <p id="preview-contact">Contact ici</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="cv-body">
+                    <div class="cv-section">
+                        <h4><i class="fas fa-graduation-cap"></i> Éducation</h4>
+                        <p id="preview-education">Éducation...</p>
+                    </div>
+                    <div class="cv-section">
+                        <h4><i class="fas fa-history"></i> Expérience</h4>
+                        <p id="preview-experience">Expérience...</p>
+                    </div>
+                    <div class="cv-section">
+                        <h4><i class="fas fa-tools"></i> Compétences</h4>
+                        <p id="preview-skills">Compétences...</p>
+                    </div>
+                    <div class="cv-section">
+                        <h4><i class="fas fa-language"></i> Langues</h4>
+                        <p id="preview-languages">Langues...</p>
+                    </div>
+                </div>
+            </div>
+            <button id="download-btn">Télécharger en PDF</button>
+        </section>
+    </main>
+
+    <script src="scripts/cv.js"></script>
+</body>
+</html>
