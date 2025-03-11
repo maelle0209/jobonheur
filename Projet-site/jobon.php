@@ -8,8 +8,14 @@ $reviews = $stmt->fetchAll();
 <?php
 session_start(); //  Important pour récupérer les infos de session
 
-$client_id = $_SESSION['client_id'] ?? null; // Si la session n'existe pas, $client_id vaut null
+// Vérifier si le client est connecté, sinon rediriger
 
+    if (!isset($_SESSION['client_id'])) {
+        header("Location: connexion.php");
+        exit;
+    }
+    $client_id = $_SESSION['client_id']; // ✅ Récupérer l'ID pour l'utiliser
+    
 ?>
 
 
@@ -27,17 +33,13 @@ $client_id = $_SESSION['client_id'] ?? null; // Si la session n'existe pas, $cli
 </head>
 <body>
 
-<div class="landing">
+  <!-- Landing Section -->
+  <div class="landing">
     <h1>JOBONHEUR</h1>
     <p>Match ton travail avec ton style de vie</p>
     <div class="buttons">
-      <?php if ($client_id): ?>
-        <a href="section.php" class="btn">Accéder aux fonctionnalités</a>
-        <a href="deconnexion.php" class="btn">Déconnexion</a>
-      <?php else: ?>
-        <a href="nouveau.php" class="btn">Créer un compte</a>
-        <a href="connexion.php" class="btn">Connexion</a>
-      <?php endif; ?>
+      <a href="nouveau.php" class="btn">Créer un compte</a>
+      <a href="connexion.php" class="btn">Connexion</a>
     </div>
   </div>
 
