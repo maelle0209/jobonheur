@@ -70,7 +70,7 @@ $client_id = $_SESSION['client_id'] ?? null; // Si la session n'existe pas, $cli
       <h3>Questions fréquentes</h3>
       <ul>
         <li onclick="selectFAQ('Comment rédiger un bon CV ?')">Comment rédiger un bon CV ?</li>
-        <li onclick="selectFAQ('Quels conseils pour un entretien ?')">Quels conseils pour un entretien ?</li>
+        <li onclick="selectFAQ(`Comment réussir un entretien d'embauche ?`)">Comment réussir un entretien d'embauche ?</li>
         <li onclick="selectFAQ('Comment négocier son salaire ?')">Comment négocier son salaire ?</li>
         <!-- Ajoutez d'autres questions fréquentes ici -->
       </ul>
