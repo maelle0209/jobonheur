@@ -38,7 +38,7 @@ session_start(); //  Important pour récupérer les infos de session
         <a href="cv.php" class="btn-option">CV</a>
         <a href="match.php" class="btn-option">Match</a>
         <a href="modevie.html" class="btn-option">Découvre ton métier</a>
-        <a href="statistiques.html" class="btn-option">Statistique</a>
+        <a href="statistiques.php" class="btn-option">Statistique</a>
     </div>
 <!-- Icône pour ajouter un avis -->
 <div class="review-icon" onclick="openReviewModal()">

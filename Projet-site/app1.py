@@ -36,7 +36,9 @@ def get_client_data(id_client):
         raise ValueError(f"Erreur lors de la récupération des données (Code {response.status_code})")
 
 # Charger le modèle
-model = joblib.load('best_model.pkl')
+model, features_used = joblib.load("best_model.pkl")  # Décompresse bien les deux éléments
+print(f"Features utilisées pour l'entraînement : {features_used}")
+
 
 # Vérifier si le modèle a des noms de colonnes
 if hasattr(model, "feature_names_in_"):
@@ -112,11 +114,11 @@ def predict():
         transformed_data = {
             'Valeur': 0,  # Remplir la valeur attendue pour 'Valeur'
             'Sexe_Hommes': sexe,
-            #'Age_15-24 ans': 1 if age_category == "15_24" else 0,
+            'Age_15-24 ans': 1 if age_category == "15_24" else 0,
             'Age_25-49 ans': 1 if age_category == "25_49" else 0,
             'Age_50 ans ou plus': 1 if age_category == "50_plus" else 0,
             'Niveau de diplome_Bac + 2 ou plus': 1 if education_level == "bac_plus_2" else 0,
-            #'Niveau de diplome_Aucun diplome, brevet': 1 if education_level == "aucun_diplome" else 0,
+            'Niveau de diplome_Aucun diplome, brevet': 1 if education_level == "aucun_diplome" else 0,
             'Niveau de diplome_Baccalaureat': 1 if education_level == "baccalaureat" else 0,
             'Niveau de diplome_CAP, BEP': 1 if education_level == "cap_bep" else 0
         }
@@ -144,4 +146,4 @@ def predict():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='127.0.0.1', port=5000, debug=True)

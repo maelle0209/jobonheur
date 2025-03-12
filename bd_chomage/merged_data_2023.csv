@@ -1,0 +1,25 @@
+Année,Sexe,Age,Valeur,Niveau de diplome,Taux
+2023,Femmes,15-24 ans,16.075,"Aucun diplome, brevet ","13,3"
+2023,Femmes,15-24 ans,16.075,"CAP, BEP ","7,3"
+2023,Femmes,15-24 ans,16.075,Baccalaureat ,"8,8"
+2023,Femmes,15-24 ans,16.075,Bac + 2 ou plus ,5
+2023,Femmes,25-49 ans,6.8,"Aucun diplome, brevet ","13,3"
+2023,Femmes,25-49 ans,6.8,"CAP, BEP ","7,3"
+2023,Femmes,25-49 ans,6.8,Baccalaureat ,"8,8"
+2023,Femmes,25-49 ans,6.8,Bac + 2 ou plus ,5
+2023,Femmes,50 ans ou plus,5.05,"Aucun diplome, brevet ","13,3"
+2023,Femmes,50 ans ou plus,5.05,"CAP, BEP ","7,3"
+2023,Femmes,50 ans ou plus,5.05,Baccalaureat ,"8,8"
+2023,Femmes,50 ans ou plus,5.05,Bac + 2 ou plus ,5
+2023,Hommes,15-24 ans,17.675,"Aucun diplome, brevet ","13,3"
+2023,Hommes,15-24 ans,17.675,"CAP, BEP ","7,3"
+2023,Hommes,15-24 ans,17.675,Baccalaureat ,"8,8"
+2023,Hommes,15-24 ans,17.675,Bac + 2 ou plus ,5
+2023,Hommes,25-49 ans,6.6375,"Aucun diplome, brevet ","13,3"
+2023,Hommes,25-49 ans,6.6375,"CAP, BEP ","7,3"
+2023,Hommes,25-49 ans,6.6375,Baccalaureat ,"8,8"
+2023,Hommes,25-49 ans,6.6375,Bac + 2 ou plus ,5
+2023,Hommes,50 ans ou plus,5.1375,"Aucun diplome, brevet ","13,3"
+2023,Hommes,50 ans ou plus,5.1375,"CAP, BEP ","7,3"
+2023,Hommes,50 ans ou plus,5.1375,Baccalaureat ,"8,8"
+2023,Hommes,50 ans ou plus,5.1375,Bac + 2 ou plus ,5

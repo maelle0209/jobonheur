@@ -9,14 +9,36 @@ import joblib
 import xgboost as xgb
 import numpy as np
 
-# Charger les données
-df = pd.read_csv('C:/MAMP/htdocs/jobonheur/bd_chomage/merged_data_2023.csv')
+import pandas as pd
+
+# Chemin du fichier CSV
+file_path = 'C:/MAMP/htdocs/jobonheur/bd_chomage/dataset_chomage.csv'
+
+# Charger le fichier CSV en gérant les guillemets et les séparateurs
+df = pd.read_csv(file_path, delimiter=',', quotechar='"')
+
+# Afficher les premières lignes pour vérifier le contenu
+print(df.head())
+
+# Nettoyer les noms de colonnes pour éviter les espaces invisibles
+df.columns = df.columns.str.strip()
+
+# Si des colonnes ont des espaces en trop, on peut les nettoyer comme suit
+df['Niveau de diplome'] = df['Niveau de diplome'].str.replace('  ', ' ', regex=True)
+
+# Enregistrer le fichier nettoyé
+df.to_csv('C:/MAMP/htdocs/jobonheur/bd_chomage/dataset_chomage_clean.csv', index=False)
+
+# Afficher les premières lignes du fichier nettoyé pour vérifier
+print("Le fichier nettoyé est enregistré sous 'dataset_chomage_clean.csv'.")
+print(df.head())
+
 
 # Remplacer les virgules par des points et convertir en float
-df['Taux'] = df['Taux'].replace(',', '.', regex=True).astype(float) / 100
+df['Taux de chômage'] = df['Taux de chômage'].replace(',', '.', regex=True).astype(float) / 100
 
 # Encoder les variables catégorielles
-df = pd.get_dummies(df, columns=['Sexe', 'Age', 'Niveau de diplome'], drop_first=True)
+df = pd.get_dummies(df, columns=['Sexe', 'Age', 'Niveau de diplome'], drop_first=False)
 
 # Remplir les valeurs manquantes
 df.fillna(df.mean(numeric_only=True), inplace=True)  # Colonnes numériques
@@ -24,11 +46,17 @@ for col in df.select_dtypes(include=['object']).columns:
     df[col].fillna(df[col].mode()[0], inplace=True)  # Colonnes catégorielles
 
 # Définir les variables indépendantes et la variable cible
-X = df.drop(['Année', 'Taux'], axis=1)
-y = df['Taux']
-
+X = df.drop(['Année', 'Taux de chômage'], axis=1)
+y = df['Taux de chômage']
+# Vérifier les features présentes dans X
+print(f"Features présentes dans X: {list(X.columns)}")
+print(f"Nombre de features dans X: {X.shape[1]}")
 # Division en train/test
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+print(X_train.columns)
+print(X_test.columns)
+# S'assurer que X_train et X_test ont les mêmes colonnes
+X_test = X_test.reindex(columns=X_train.columns, fill_value=0)
 
 # Ajouter du bruit aux données pour éviter un sur-apprentissage
 X_train_noisy = X_train + np.random.normal(0, 0.1, X_train.shape)
@@ -113,5 +141,9 @@ plt.show()
 
 # ------------------------- Enregistrer le meilleur modèle -------------------------
 best_model = min([(mse_lr, model_lr), (mse_ridge, ridge_model), (rf_mse, rf_model), (gb_mse, gb_model), (xgb_mse, xgb_model)], key=lambda x: x[0])[1]
-joblib.dump(best_model, 'best_model.pkl')
-print("Modèle avec la meilleure performance sauvegardé.")
+features_used = X_train.columns.tolist()
+print(f"Features utilisées pour l'entraînement : {features_used}")
+
+# Sauvegarder également les features
+joblib.dump((best_model, features_used), 'best_model.pkl')
+print("Modèle et features sauvegardés.")

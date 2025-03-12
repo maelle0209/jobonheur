@@ -1,14 +1,47 @@
 <?php
-// Si des données doivent être traitées au niveau du serveur, fais-le ici
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Code pour traiter les données du formulaire, par exemple, récupérer l'ID du client
-    $clientId = $_POST['id_client'];
-    
-    // Simulation d'une réponse de prédiction
-    $prediction = "Taux de chômage prévu : 8%"; // Exemple de prédiction
-    $advice = ["Conseil : Formez-vous dans un secteur en forte demande", "Conseil : Restez flexible"];
+session_start();
+include 'bd.php';  // Connexion à la base de données
+$bdd = getBD();  
+
+header('Content-Type: text/html; charset=UTF-8'); // Réponse HTML
+
+// Lire les données JSON envoyées via POST
+$data = json_decode(file_get_contents('php://input'), true);
+
+// Vérifier si l'ID client est dans les données envoyées
+if (isset($data['id_client']) && !empty($data['id_client'])) {
+    $id_client = $data['id_client'];
+} elseif (isset($_SESSION['client_id'])) {
+    // Si l'ID client n'est pas dans la requête POST, vérifier dans la session
+    $id_client = $_SESSION['client_id'];
+} else {
+    // Si l'ID client n'est pas fourni ni en POST ni en session
+    echo json_encode(['error' => 'ID client non fourni']);
+    exit();
+}
+
+try {
+    $query = "SELECT clients.sexe, cv.age_category, cv.education_level
+              FROM clients
+              JOIN cv ON clients.id_client = cv.id_client
+              WHERE clients.id_client = :id_client LIMIT 1";
+
+    $stmt = $bdd->prepare($query);
+    $stmt->bindParam(':id_client', $id_client, PDO::PARAM_INT);
+    $stmt->execute();
+
+    // Vérifier si des données sont retournées
+    if ($stmt->rowCount() > 0) {
+        $clientData = $stmt->fetch(PDO::FETCH_ASSOC);  // Récupérer les données
+    } else {
+        echo json_encode(['error' => 'Client non trouvé']);
+        exit();
+    }
+} catch (PDOException $e) {
+    echo json_encode(['error' => 'Erreur SQL: ' . $e->getMessage()]);
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -18,57 +51,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="styles/statistiques.css">
 </head>
 <body>
-
-    <!-- Bouton de retour à la page précédente -->
     <div class="header">
         <a href="section.php" class="btn-retour">Retour à l'accueil</a>
     </div>
 
-    <!-- Présentation des statistiques -->
     <div class="presentation">
         <h2>Les statistiques du chômage en France selon l'INSEE</h2>
-        <p>Les données suivantes reflètent l'évolution du chômage en France, avec une analyse détaillée selon différents critères. Ces informations sont mises à jour régulièrement par l'INSEE afin de mieux comprendre les tendances du marché du travail.</p>
+        <p>Les données suivantes reflètent l'évolution du chômage en France.</p>
     </div>
 
-    <!-- Formulaire de prédiction -->
     <div class="prediction-section">
         <h2>Tester la prédiction du chômage</h2>
-        <form id="prediction-form" method="POST">
-            <label for="id_client">Client ID :</label>
-            <input type="number" id="id_client" name="id_client" required>
-            <button class="btn-option" type="submit">Prédire</button>
-        </form>
-        
-        <?php
-        // Si la prédiction a été générée, l'afficher ici
-        if (isset($prediction)) {
-            echo "<div id='prediction-result' class='prediction-result'>";
-            echo "<p>Prédiction : " . $prediction . "</p>";
-            echo "<ul>";
-            foreach ($advice as $item) {
-                echo "<li>" . $item . "</li>";
-            }
-            echo "</ul></div>";
-        }
-        ?>
+        <p class="error-message" id="error-message"></p>
     </div>
 
-    <!-- Section des options de filtrage des statistiques -->
+    <div class="client-info">
+        <div><strong>Sexe:</strong> <span id="sexe"><?= $clientData['sexe'] ?></span></div>
+        <div><strong>Catégorie d'âge:</strong> <span id="age_category"><?= $clientData['age_category'] ?></span></div>
+        <div><strong>Niveau de diplôme:</strong> <span id="education_level"><?= $clientData['education_level'] ?></span></div>
+    </div>
+
     <div class="option-section">
         <button class="btn-option" onclick="showStat('sexe')">Statistiques par Sexe</button>
         <button class="btn-option" onclick="showStat('age')">Statistiques par Âge</button>
         <button class="btn-option" onclick="showStat('diplome')">Statistiques par Diplôme</button>
+        <button class="btn-option" onclick="predictChomage()">Tester la prédiction</button>
     </div>
 
-    <!-- Section pour afficher les figures et les interprétations -->
     <div id="stat-result" class="stat-result">
-        <img src="" alt="statistiques" id="stat-image" style="display: none;" />
         <div class="stat-interpretation" id="stat-interpretation">
             <p>Sélectionnez une option pour afficher les statistiques associées et leur interprétation.</p>
         </div>
     </div>
 
     <script>
+        // Fonction pour afficher les statistiques en fonction de l'option sélectionnée
         function showStat(option) {
             const resultDiv = document.getElementById('stat-result');
             let graphs = [];
@@ -91,11 +108,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 interpretationText = "Cette statistique analyse l’impact du niveau de diplôme sur le chômage.";
             }
     
-            // Générer plusieurs iframes si plusieurs graphiques existent
             resultDiv.innerHTML = graphs.map(src => 
                 `<iframe src="${src}" width="100%" height="500px" style="border:none;"></iframe>` 
             ).join("") + `<div class="stat-interpretation"><p>${interpretationText}</p></div>`;
         }
+
+        // Fonction pour tester la prédiction de chômage
+        function predictChomage() {
+            const sexe = document.getElementById('sexe').textContent;
+            const ageCategory = document.getElementById('age_category').textContent;
+            const educationLevel = document.getElementById('education_level').textContent;
+
+            if (!sexe || !ageCategory || !educationLevel) {
+                document.getElementById('error-message').textContent = 'Certaines informations nécessaires pour la prédiction sont manquantes. Veuillez compléter votre profil CV.';
+                return;
+            }
+
+            const requestData = {
+                sexe: sexe,
+                age_category: ageCategory,
+                education_level: educationLevel
+            };
+
+            console.log('Données envoyées:', requestData); // Afficher la requête avant de l'envoyer
+
+            fetch('http://127.0.0.1:5000/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.prediction) {
+                    alert("Résultat de la prédiction : " + data.prediction);
+                    document.getElementById('prediction-result').innerHTML = `Prédiction du taux de chômage : ${data.prediction}`;
+                    document.getElementById('advice').innerHTML = `Conseils : ${data.advice.join(' ')}`;
+                } else {
+                    alert("Erreur de prédiction");
+                }
+            })
+            .catch(error => console.error('Erreur:', error));
+        }
+
+
     </script>
 </body>
 </html>
