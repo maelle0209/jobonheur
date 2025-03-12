@@ -1,46 +1,68 @@
 <?php
 session_start();
-include 'bd.php'; // Inclure la fonction pour se connecter à la base de données
+include 'bd.php';
 
-// Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['client_id'])) {
-    header("Location: connexion.php"); // Rediriger vers la page de connexion si non connecté
+    header("Location: connexion.php");
     exit;
 }
 
-$userId = $_SESSION['client_id']; // Récupérer l'ID de l'utilisateur connecté
+$userId = $_SESSION['client_id'];
+$bdd = getBD();
 
-// Connexion à la base de données
-$bdd = getBD(); // Fonction pour se connecter à la base de données
+$queryCV = "SELECT skills, education_level, experience FROM cv WHERE id_client = ?";
+$stmtCV = $bdd->prepare($queryCV);
+$stmtCV->execute([$userId]);
+$cv = $stmtCV->fetch();
 
-// Récupérer l'ID de l'offre de la requête, sinon prendre la première offre
-$jobId = isset($_GET['job_id']) ? $_GET['job_id'] : 1;
-
-// Vérifier si l'utilisateur a déjà vu un job et récupérer l'ID du dernier job vu
-$queryLastJob = "SELECT last_job_id FROM clients WHERE id_client = ?";
-$stmtLastJob = $bdd->prepare($queryLastJob);
-$stmtLastJob->execute([$userId]);
-$lastJob = $stmtLastJob->fetch();
-
-if ($lastJob && $lastJob['last_job_id']) {
-    $jobId = $lastJob['last_job_id']; // Si l'utilisateur a déjà un dernier job vu, on l'affiche
-} else {
-    // Sinon, on prend la première offre par défaut
-    $jobId = 1;
+if (!$cv) {
+    echo "<p>Aucun CV trouvé. Veuillez compléter votre profil.</p>";
+    exit;
 }
 
-// Récupérer l'offre actuelle
+$queryJobs = "SELECT `job_id`, `Intitulé du poste`, `Description`, `Ville`, `Type de contrat`, `salaire`, `Entreprise`, `lien`, `niveau libellé`,`compétences exigées`, `Qualité professionnelles`,  `Experience exigé` FROM response_2";
+$stmtJobs = $bdd->query($queryJobs);
+$jobs = $stmtJobs->fetchAll();
+
+$recommendations = [];
+
+function normalizeSkills($skills) {
+    return array_map('trim', array_map('strtolower', explode(',', $skills)));
+}
+
+foreach ($jobs as $job) {
+    $score = 0;
+    $jobSkills = normalizeSkills($job['compétences exigées']);
+    $cvSkills = normalizeSkills($cv['skills']);
+    
+    $matchingSkills = count(array_intersect($jobSkills, $cvSkills));
+    $score += ($matchingSkills / max(1, count($jobSkills))) * 60;
+    
+    if (strtolower($job['niveau libellé']) == strtolower($cv['education_level'])) {
+        $score += 20;
+    }
+    
+    $jobExperience = (int) $job['Experience exigé'];
+    $cvExperience = (int) $cv['experience'];
+    
+    if ($cvExperience >= $jobExperience) {
+        $score += 20;
+    } elseif ($cvExperience >= ($jobExperience * 0.75)) {
+        $score += 10;
+    }
+    
+    $recommendations[] = ['job' => $job, 'score' => $score];
+}
+
+usort($recommendations, fn($a, $b) => $b['score'] <=> $a['score']);
+##########################################################################################################"
+
 $query = "SELECT `job_id`, `Intitulé du poste`, `Description`, `Ville`, `Type de contrat`, `salaire`, `Entreprise`, `lien`, `niveau libellé`,`compétences exigées`, `Qualité professionnelles`
           FROM response_2 WHERE `job_id` = ?";
 $stmt = $bdd->prepare($query);
 $stmt->execute([$jobId]);
 $job = $stmt->fetch();
 
-if (!$job) {
-    // Si aucun résultat, afficher un message d'erreur ou rediriger
-    echo 'Aucune offre trouvée.';
-    exit;
-}
 /// Récupérer l'ID du job suivant (l'ID du job actuel + 1 ou par une autre méthode)
 $nextJobId = $jobId + 1; // Exemple pour passer au job suivant par ID
 $queryNextJob = "SELECT job_id FROM response_2 WHERE job_id = ?";
@@ -52,7 +74,7 @@ if (!$nextJob) {
     // Si l'ID suivant n'existe pas, prenez l'ID du premier job
     $nextJobId = 1;
 }
-
+################################################################################################################
 // Maintenant, vous pouvez utiliser $nextJobId pour la redirection après avoir refusé l'offre
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_POST['action'] === 'favoris') {
@@ -78,7 +100,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit; // Assurez-vous que la redirection s'arrête ici
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -86,9 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Offre d'Emploi</title>
+    <title>Offres Recommandées</title>
     <link rel="stylesheet" href="styles/match.css">
-
 </head>
 <body>
     <div class="container">
@@ -119,21 +139,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ?>
             </ul>
         </div>
-
-        <!-- Section de l'offre actuelle -->
-        <div class="job-container">
-            <div class="job-card">
-                <h2><?= htmlspecialchars($job['Intitulé du poste']) ?></h2>
-                <p><strong>Entreprise :</strong> <?= htmlspecialchars($job['Entreprise']) ?: 'Non spécifiée' ?></p>
-                <p><strong>Ville :</strong> <?= htmlspecialchars($job['Ville']) ?></p>
-                <p><strong>Type de contrat :</strong> <?= htmlspecialchars($job['Type de contrat']) ?></p>
-                <p><strong>Salaire :</strong> <?= htmlspecialchars($job['salaire']) ?: 'Non précisé' ?></p>
-                <p><strong>Niveau exigé :</strong> <?= htmlspecialchars($job['niveau libellé']) ?: 'Non précisé' ?></p>
-                <p><strong>Compétences exigées :</strong> <?= htmlspecialchars($job['compétences exigées']) ?: 'Non précisé' ?></p>
-                <p><strong>Qualités professionnelles :</strong> <?= htmlspecialchars($job['Qualité professionnelles']) ?: 'Non précisé' ?></p>
-                <p><?= nl2br(htmlspecialchars($job['Description'])) ?></p> 
-
-                <div class="actions">
+        
+        <div class="job-list">
+            <?php foreach (array_slice($recommendations, 0, 5) as $rec) : ?>
+                <div class="job-card">
+                    <h2><?= htmlspecialchars($job['Intitulé du poste']) ?></h2>
+                    <p><strong>Entreprise :</strong> <?= htmlspecialchars($job['Entreprise']) ?: 'Non spécifiée' ?></p>
+                    <p><strong>Ville :</strong> <?= htmlspecialchars($job['Ville']) ?></p>
+                    <p><strong>Type de contrat :</strong> <?= htmlspecialchars($job['Type de contrat']) ?></p>
+                    <p><strong>Salaire :</strong> <?= htmlspecialchars($job['salaire']) ?: 'Non précisé' ?></p>
+                    <p><strong>Niveau exigé :</strong> <?= htmlspecialchars($job['niveau libellé']) ?: 'Non précisé' ?></p>
+                    <p><strong>Compétences exigées :</strong> <?= htmlspecialchars($job['compétences exigées']) ?: 'Non précisé' ?></p>
+                    <p><strong>Qualités professionnelles :</strong> <?= htmlspecialchars($job['Qualité professionnelles']) ?: 'Non précisé' ?></p>
+                    <p><?= nl2br(htmlspecialchars($job['Description'])) ?></p>
+                    <p><strong>Score :</strong> <?= number_format($rec['score'], 2) ?>%</p>
+                </div>
+            <?php endforeach; ?>
+            <div class="actions">
                     <!-- Formulaire pour gérer les actions (favoris ou refus) -->
                     <form method="POST">
                         <button type="submit" name="action" value="refus" class="action-btn cross">❌</button>
@@ -228,7 +250,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     jobCard.addEventListener('touchend', endSwipe);
 </script>
 
-
-   
 </body>
 </html>

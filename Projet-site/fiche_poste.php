@@ -3,7 +3,7 @@ session_start();
 include 'bd.php'; // Inclure la fonction pour se connecter à la base de données
 
 // Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION['client'])) {
+if (!isset($_SESSION['client_id'])) {
     header("Location: connexion.php"); // Rediriger vers la page de connexion si non connecté
     exit;
 }

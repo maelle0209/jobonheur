@@ -142,3 +142,20 @@ body {
     font-size: 30px;
     color: white;
 }
+
+.star-rating {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.star-rating i {
+    color: gray;
+    transition: color 0.2s;
+}
+
+.star-rating i.active {
+    color: #ffcc00;
+}
