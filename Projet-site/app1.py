@@ -37,7 +37,7 @@ def get_client_data(id_client):
 
 # Charger le modèle
 model, features_used = joblib.load("best_model.pkl")  # Décompresse bien les deux éléments
-print(f"Features utilisées pour l'entraînement : {features_used}")
+print(f"Features utilisées pour l'entraînement : {features_used}")  # Debug
 
 
 # Vérifier si le modèle a des noms de colonnes
@@ -60,27 +60,31 @@ def generate_advice(predicted_rate):
         advice.append("Le taux de chômage est faible pour ce groupe. Continue dans cette direction et optimise ton CV.")
     return advice
 
-# Route pour la prédiction
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
         data = request.get_json()  
         print(f"Requête reçue : {data}")
         id_client = data.get('id_client')  
+        print(f"ID Client reçu dans la requête : {id_client}")
 
         if not id_client:
             if 'client_id' in session:
                 id_client = session['client_id']
+                print(f"ID récupéré depuis la session : {id_client}")
             else:
                 return jsonify({'error': "ID du client manquant"}), 400
 
         # Stocker l'ID client dans la session
         session['client_id'] = id_client
-        print(f"ID Client dans la session : {session['client_id']}")  # Vérification
+        print(f"ID Client dans la session : {session['client_id']}")
 
         # Récupération des données
         client_data = get_client_data(id_client)
         print(f"Client Data récupéré : {client_data}")
+
+        if not client_data:
+            return jsonify({'error': "Données client non trouvées"}), 400
 
         sexe = client_data['sexe'].lower()
         age_category = client_data['age_category']
@@ -141,9 +145,9 @@ def predict():
 
         return jsonify({'prediction': f"{round(prediction * 100, 6)}%", 'advice': advice})
 
-
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)

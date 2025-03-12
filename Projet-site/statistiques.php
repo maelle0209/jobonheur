@@ -3,11 +3,6 @@ session_start();
 include 'bd.php';  // Connexion à la base de données
 $bdd = getBD();  
 
-header('Content-Type: text/html; charset=UTF-8'); // Réponse HTML
-
-// Lire les données JSON envoyées via POST
-$data = json_decode(file_get_contents('php://input'), true);
-
 // Vérifier si l'ID client est dans les données envoyées
 if (isset($data['id_client']) && !empty($data['id_client'])) {
     $id_client = $data['id_client'];
@@ -20,25 +15,22 @@ if (isset($data['id_client']) && !empty($data['id_client'])) {
     exit();
 }
 
-try {
-    $query = "SELECT clients.sexe, cv.age_category, cv.education_level
-              FROM clients
-              JOIN cv ON clients.id_client = cv.id_client
-              WHERE clients.id_client = :id_client LIMIT 1";
+// Récupérer les données du client (sexe, âge, niveau d'éducation)
+$query = "SELECT clients.sexe, cv.age_category, cv.education_level
+          FROM clients
+          JOIN cv ON clients.id_client = cv.id_client
+          WHERE clients.id_client = :id_client LIMIT 1";
 
-    $stmt = $bdd->prepare($query);
-    $stmt->bindParam(':id_client', $id_client, PDO::PARAM_INT);
-    $stmt->execute();
+$stmt = $bdd->prepare($query);
+$stmt->bindParam(':id_client', $id_client, PDO::PARAM_INT);
+$stmt->execute();
 
-    // Vérifier si des données sont retournées
-    if ($stmt->rowCount() > 0) {
-        $clientData = $stmt->fetch(PDO::FETCH_ASSOC);  // Récupérer les données
-    } else {
-        echo json_encode(['error' => 'Client non trouvé']);
-        exit();
-    }
-} catch (PDOException $e) {
-    echo json_encode(['error' => 'Erreur SQL: ' . $e->getMessage()]);
+// Vérifier si des données sont retournées
+if ($stmt->rowCount() > 0) {
+    $clientData = $stmt->fetch(PDO::FETCH_ASSOC);  // Récupérer les données
+} else {
+    echo json_encode(['error' => 'Client non trouvé']);
+    exit();
 }
 ?>
 
@@ -51,6 +43,9 @@ try {
     <link rel="stylesheet" href="styles/statistiques.css">
 </head>
 <body>
+    <!-- Stocker l'ID client dans un élément caché -->
+    <div id="client_id" style="display:none;"><?php echo $id_client; ?></div>
+
     <div class="header">
         <a href="section.php" class="btn-retour">Retour à l'accueil</a>
     </div>
@@ -60,12 +55,8 @@ try {
         <p>Les données suivantes reflètent l'évolution du chômage en France.</p>
     </div>
 
-    <div class="prediction-section">
-        <h2>Tester la prédiction du chômage</h2>
-        <p class="error-message" id="error-message"></p>
-    </div>
-
     <div class="client-info">
+        <p>Vos données :</p>
         <div><strong>Sexe:</strong> <span id="sexe"><?= $clientData['sexe'] ?></span></div>
         <div><strong>Catégorie d'âge:</strong> <span id="age_category"><?= $clientData['age_category'] ?></span></div>
         <div><strong>Niveau de diplôme:</strong> <span id="education_level"><?= $clientData['education_level'] ?></span></div>
@@ -78,19 +69,25 @@ try {
         <button class="btn-option" onclick="predictChomage()">Tester la prédiction</button>
     </div>
 
-    <div id="stat-result" class="stat-result">
+    <!-- Résultats de la prédiction et des conseils -->
+    <div id="prediction-result"></div> 
+    <div id="advice"></div> 
+
+     <!-- Section pour afficher les figures et les interprétations -->
+     <div id="stat-result" class="stat-result">
+        <img src="" alt="statistiques" id="stat-image" style="display: none;" />
         <div class="stat-interpretation" id="stat-interpretation">
             <p>Sélectionnez une option pour afficher les statistiques associées et leur interprétation.</p>
         </div>
     </div>
 
     <script>
-        // Fonction pour afficher les statistiques en fonction de l'option sélectionnée
+        // Fonction pour afficher les statistiques avec des graphiques HTML
         function showStat(option) {
             const resultDiv = document.getElementById('stat-result');
             let graphs = [];
             let interpretationText = "";
-    
+
             if (option === "sexe") {
                 graphs = [
                     "graphs/graphique_sexe1975.html",
@@ -107,30 +104,35 @@ try {
                 graphs = ["graphs/graphique_diplome.html"];
                 interpretationText = "Cette statistique analyse l’impact du niveau de diplôme sur le chômage.";
             }
-    
+
+            // Générer plusieurs iframes si plusieurs graphiques existent
             resultDiv.innerHTML = graphs.map(src => 
                 `<iframe src="${src}" width="100%" height="500px" style="border:none;"></iframe>` 
             ).join("") + `<div class="stat-interpretation"><p>${interpretationText}</p></div>`;
         }
 
-        // Fonction pour tester la prédiction de chômage
+        // Fonction pour tester la prédiction du chômage
+        // Fonction pour tester la prédiction du chômage
         function predictChomage() {
+            // Récupérer l'ID client depuis l'élément caché
+            const idClient = document.getElementById('client_id').textContent;
             const sexe = document.getElementById('sexe').textContent;
             const ageCategory = document.getElementById('age_category').textContent;
             const educationLevel = document.getElementById('education_level').textContent;
 
-            if (!sexe || !ageCategory || !educationLevel) {
+            if (!idClient || !sexe || !ageCategory || !educationLevel) {
                 document.getElementById('error-message').textContent = 'Certaines informations nécessaires pour la prédiction sont manquantes. Veuillez compléter votre profil CV.';
                 return;
             }
 
             const requestData = {
+                id_client: idClient,  // Envoi de l'ID client récupéré
                 sexe: sexe,
                 age_category: ageCategory,
                 education_level: educationLevel
             };
 
-            console.log('Données envoyées:', requestData); // Afficher la requête avant de l'envoyer
+            console.log('Données envoyées:', requestData); // Afficher les données envoyées dans la console
 
             fetch('http://127.0.0.1:5000/predict', {
                 method: 'POST',
@@ -141,17 +143,33 @@ try {
             })
             .then(response => response.json())
             .then(data => {
+                console.log('Réponse du serveur:', data); // Afficher la réponse du serveur
                 if (data.prediction) {
                     alert("Résultat de la prédiction : " + data.prediction);
-                    document.getElementById('prediction-result').innerHTML = `Prédiction du taux de chômage : ${data.prediction}`;
-                    document.getElementById('advice').innerHTML = `Conseils : ${data.advice.join(' ')}`;
+                    
+                    // Applique le style à prediction-result
+                    const predictionResult = document.getElementById('prediction-result');
+                    if (predictionResult) {
+                        predictionResult.innerHTML = `Prédiction du taux de chômage : ${data.prediction}`;
+                        predictionResult.classList.add('stat-interpretation'); // Ajoute la classe
+                    }
+                    
+                    // Applique le style à advice (conseils)
+                    const advice = document.getElementById('advice');
+                    if (advice && data.advice) {
+                        // Formater les conseils en gras et sous forme de liste
+                        const adviceList = data.advice.map(adviceItem => {
+                            return `<li><strong>${adviceItem}</strong></li>`;  // Ajouter des balises <strong> et <li>
+                        }).join('');
+                        advice.innerHTML = `<ul>${adviceList}</ul>`; // Créer une liste <ul> avec les conseils formatés
+                        advice.classList.add('stat-interpretation'); // Ajoute la classe
+                    }
                 } else {
                     alert("Erreur de prédiction");
                 }
             })
             .catch(error => console.error('Erreur:', error));
         }
-
 
     </script>
 </body>
