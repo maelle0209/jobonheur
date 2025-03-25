@@ -44,7 +44,7 @@ def get_best_response(user_input):
         return "Je ne suis pas sûr de comprendre, peux-tu reformuler ?"
     
     best_question = tfidf_data["questions"][best_match_idx]
-    return chatbot.get_response(best_question)
+    return tfidf_data["answers"][best_match_idx]
 
 # Fonction pour détecter l'intention d'un message
 def detect_intent(user_input):

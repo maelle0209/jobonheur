@@ -32,4 +32,4 @@ model.fit(X_train, y_train)
 # Sauvegarde du modèle
 import joblib
 joblib.dump(model, "intent_classifier.pkl")
-print("Modèle d'intention Naïve Bayes sauvegardé !")
+print("Modele d'intention Naïve Bayes sauvegarde !")
