@@ -7,6 +7,22 @@ from chatterbot.trainers import ChatterBotCorpusTrainer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import sys
+from nltk.corpus import wordnet
+from nltk.stem import WordNetLemmatizer
+import nltk
+from chatterbot.trainers import ListTrainer
+
+
+
+nltk.download("wordnet")
+
+lemmatizer = WordNetLemmatizer()
+
+def preprocess_text(text):
+    words = text.split()
+    return " ".join([lemmatizer.lemmatize(word.lower()) for word in words])
+
+
 sys.stdout.reconfigure(encoding='utf-8')
 # Création du chatbot avec stockage en SQLite
 chatbot = ChatBot(
@@ -51,8 +67,14 @@ conversations = load_conversations()
 
 # Extraire les questions depuis les données YAML (extrait chaque première entrée de chaque conversation)
 questions = [conversation[0] for conversation in data['conversations'] if len(conversation[0].strip()) > 0]
+questions = [preprocess_text(q) for q in questions]
+
 # Assurer que les réponses existent également pour chaque question
 answers = [conversation[1] for conversation in data['conversations']]
+
+
+trainer = ListTrainer(chatbot)
+trainer.train(questions + answers)
 
 # Initialiser le TfidfVectorizer
 vectorizer = TfidfVectorizer()

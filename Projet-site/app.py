@@ -40,7 +40,7 @@ def get_best_response(user_input):
     similarities = cosine_similarity(user_tfidf, tfidf_matrix)
     best_match_idx = np.argmax(similarities)
 
-    if similarities[0][best_match_idx] < 0.5:  # Seuil de confiance
+    if similarities[0][best_match_idx] < 0.2:  # Seuil de confiance
         return "Je ne suis pas sûr de comprendre, peux-tu reformuler ?"
     
     best_question = tfidf_data["questions"][best_match_idx]
