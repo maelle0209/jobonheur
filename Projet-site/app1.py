@@ -49,7 +49,7 @@ if hasattr(model, "feature_names_in_"):
 def generate_advice(predicted_rate):
     predicted_rate *= 100
     advice = []
-    if predicted_rate > 10:
+    if predicted_rate > 12:
         advice.append("Le taux de chômage est élevé pour ce groupe. Envisage de poursuivre des études supplémentaires.")
         advice.append("Explore des secteurs porteurs comme la tech, la santé ou la finance.")
         advice.append("Développe des compétences en ligne (certifications, cours gratuits).")

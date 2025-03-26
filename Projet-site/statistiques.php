@@ -56,7 +56,7 @@ if ($stmt->rowCount() > 0) {
     </div>
 
     <div class="client-info">
-        <p>Vos données :</p>
+        <p>Cliquez sur <strong>Mon risque de chômage</strong> pour connaitre votre taux de chômage moyen par rapport à vos données:</p>
         <div><strong>Sexe:</strong> <span id="sexe"><?= $clientData['sexe'] ?></span></div>
         <div><strong>Catégorie d'âge:</strong> <span id="age_category"><?= $clientData['age_category'] ?></span></div>
         <div><strong>Niveau de diplôme:</strong> <span id="education_level"><?= $clientData['education_level'] ?></span></div>
@@ -66,7 +66,7 @@ if ($stmt->rowCount() > 0) {
         <button class="btn-option" onclick="showStat('sexe')">Statistiques par Sexe</button>
         <button class="btn-option" onclick="showStat('age')">Statistiques par Âge</button>
         <button class="btn-option" onclick="showStat('diplome')">Statistiques par Diplôme</button>
-        <button class="btn-option" onclick="predictChomage()">Tester la prédiction</button>
+        <button class="btn-option" onclick="predictChomage()">Mon risque de chômage</button>
     </div>
 
     <!-- Résultats de la prédiction et des conseils -->
