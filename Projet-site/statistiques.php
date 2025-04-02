@@ -33,6 +33,14 @@ if ($stmt->rowCount() > 0) {
     exit();
 }
 ?>
+#<?php
+#$pythonPath = "C:/Users/rawen/anaconda3/python.exe";  // Chemin vers Python (avec l'environnement activé)
+#$scriptPath = __DIR__ . '/app1.py';  // Chemin vers ton script Python
+#echo "Avant exécution du script Python<br>";  // Message pour tester le flux
+#$output = shell_exec($pythonPath . ' ' . $scriptPath);
+#echo "Après exécution du script Python<br>";  // Message pour tester le flux
+#echo $output;  // Afficher la sortie du script Python
+#?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -74,12 +82,18 @@ if ($stmt->rowCount() > 0) {
     <div id="advice"></div> 
 
      <!-- Section pour afficher les figures et les interprétations -->
-     <div id="stat-result" class="stat-result">
+    <div id="stat-result" class="stat-result">
+        <!-- Indicateur de chargement placé à l'intérieur de la section -->
+        <div id="loading" style="display: none;">
+            <p>Les graphiques sont en train de se charger...</p>
+            <!-- Vous pouvez ajouter un spinner ici -->
+        </div>
         <img src="" alt="statistiques" id="stat-image" style="display: none;" />
         <div class="stat-interpretation" id="stat-interpretation">
             <p>Sélectionnez une option pour afficher les statistiques associées et leur interprétation.</p>
         </div>
     </div>
+
 
     <script>
         // Fonction pour afficher les statistiques avec des graphiques HTML
@@ -90,11 +104,11 @@ if ($stmt->rowCount() > 0) {
 
             if (option === "sexe") {
                 graphs = [
-                    "graphs/graphique_sexe1975.html",
-                    "graphs/graphique_sexe1995.html",
-                    "graphs/graphique_sexe2000.html",
+                    "graphs/graphique_sexe.html",
                     "graphs/graphique_sexe2017.html",
-                    "graphs/graphique_sexe.html"
+                    "graphs/graphique_sexe2000.html",
+                    "graphs/graphique_sexe1995.html",
+                    "graphs/graphique_sexe1975.html"
                 ];
                 interpretationText = "Cette statistique montre les taux de chômage en fonction du sexe.";
             } else if (option === "age") {
@@ -109,6 +123,16 @@ if ($stmt->rowCount() > 0) {
             resultDiv.innerHTML = graphs.map(src => 
                 `<iframe src="${src}" width="100%" height="500px" style="border:none;"></iframe>` 
             ).join("") + `<div class="stat-interpretation"><p>${interpretationText}</p></div>`;
+             // Masquer l'indicateur de chargement et afficher les statistiques
+             setTimeout(() => {
+                const loadingDiv = document.getElementById('loading');
+                const statContentDiv = document.getElementById('stat-result');
+                
+                if (loadingDiv && statContentDiv) {
+                    loadingDiv.style.display = 'none';  // Masquer l'indicateur de chargement
+                    statContentDiv.style.display = 'block';  // Afficher les statistiques
+                }
+            }, 1000);  // Ajustez ce délai en fonction du temps réel de chargement
         }
 
         // Fonction pour tester la prédiction du chômage
@@ -144,9 +168,7 @@ if ($stmt->rowCount() > 0) {
             .then(response => response.json())
             .then(data => {
                 console.log('Réponse du serveur:', data); // Afficher la réponse du serveur
-                if (data.prediction) {
-                    alert("Résultat de la prédiction : " + data.prediction);
-                    
+                if (data.prediction) {                    
                     // Applique le style à prediction-result
                     const predictionResult = document.getElementById('prediction-result');
                     if (predictionResult) {

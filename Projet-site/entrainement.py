@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 
 # Chemin du fichier CSV
-file_path = 'C:/MAMP/htdocs/jobonheur/bd_chomage/dataset_chomage.csv'
+file_path = '../bd_chomage/dataset_chomage.csv'
 
 # Charger le fichier CSV en gérant les guillemets et les séparateurs
 df = pd.read_csv(file_path, delimiter=',', quotechar='"')
