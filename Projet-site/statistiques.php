@@ -34,12 +34,11 @@ if ($stmt->rowCount() > 0) {
 }
 ?>
 <?php
-$pythonPath = "C:/Users/rawen/anaconda3/python.exe";  // Chemin vers Python (avec l'environnement activé)
-$scriptPath = __DIR__ . '/app1.py';  // Chemin vers ton script Python
-echo "Avant exécution du script Python<br>";  // Message pour tester le flux
-$output = shell_exec($pythonPath . ' ' . $scriptPath);
-echo "Après exécution du script Python<br>";  // Message pour tester le flux
-echo $output;  // Afficher la sortie du script Python
+//$scriptPath = __DIR__ . '/app1.py';  // Chemin vers ton script Python
+//echo "Avant exécution du script Python<br>";  // Message pour tester le flux
+//$output = shell_exec('python ' . escapeshellarg($scriptPath));
+//echo "Après exécution du script Python<br>";  // Message pour tester le flux
+//echo $output;  // Afficher la sortie du script Python
 ?>
 
 <!DOCTYPE html>
