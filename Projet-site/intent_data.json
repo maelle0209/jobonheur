@@ -1,0 +1,63 @@
+{
+    "salutation": [
+        "Bonjour",
+        "Salut",
+        "Coucou",
+        "Hey",
+        "Hello",
+        "Yo",
+        "Bonsoir",
+        "Bonjour, comment vas-tu ?",
+        "Salut, ça va ?"
+    ],
+    "au_revoir": [
+        "Au revoir",
+        "Bye",
+        "À plus tard",
+        "À bientôt",
+        "Ciao",
+        "Passe une bonne journée",
+        "On se revoit bientôt"
+    ],
+    "demande_info": [
+        "Peux-tu me donner des conseils sur le travail ?",
+        "Comment améliorer mes compétences ?",
+        "Quel est le meilleur métier ?",
+        "Comment trouver un emploi ?",
+        "Que dois-je écrire dans mon CV ?",
+        "Peux-tu me parler des entretiens d'embauche ?",
+        "Comment négocier un salaire ?",
+        "Quelles sont les meilleures compétences à avoir en 2024 ?"
+    ],
+    "remerciement": [
+        "Merci",
+        "Merci beaucoup",
+        "Je te remercie",
+        "C'est gentil, merci",
+        "Merci pour ton aide",
+        "Super, merci bien !"
+    ],
+    "motivation": [
+        "Je suis démotivé au travail",
+        "Comment rester motivé ?",
+        "J'ai du mal à me concentrer",
+        "Comment être plus productif ?",
+        "Je me sens stressé par mon travail",
+        "As-tu des conseils pour être plus efficace ?"
+    ],
+    "changement_de_carriere": [
+        "Je veux changer de carrière",
+        "Comment se reconvertir professionnellement ?",
+        "Quel est le meilleur moment pour changer de travail ?",
+        "J'aimerais apprendre un nouveau métier",
+        "Comment trouver une formation pour une nouvelle carrière ?",
+        "Est-ce une bonne idée de quitter mon emploi actuel ?"
+    ],
+    "conflit_travail": [
+        "J'ai des problèmes avec mon patron",
+        "Comment gérer un conflit au travail ?",
+        "Que faire si un collègue est toxique ?",
+        "Comment demander une augmentation ?",
+        "Je veux démissionner, comment faire ?"
+    ]
+}
