@@ -143,7 +143,60 @@ plt.show()
 best_model = min([(mse_lr, model_lr), (mse_ridge, ridge_model), (rf_mse, rf_model), (gb_mse, gb_model), (xgb_mse, xgb_model)], key=lambda x: x[0])[1]
 features_used = X_train.columns.tolist()
 print(f"Features utilisées pour l'entraînement : {features_used}")
+def plot_predictions(y_test, y_pred, model_name):
+    plt.figure(figsize=(6, 6))
+    plt.scatter(y_test, y_pred, color='blue', edgecolor='k', alpha=0.6)
+    plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], color='red', lw=2, linestyle='--')
+    plt.xlabel('Valeurs réelles')
+    plt.ylabel('Valeurs prédites')
+    plt.title(f'{model_name} : Prédites vs Réelles')
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+# Exemple d'utilisation pour chaque modèle :
+plot_predictions(y_test, y_pred_lr, 'Régression Linéaire')
+plot_predictions(y_test, ridge_y_pred, 'Ridge')
+plot_predictions(y_test, rf_y_pred, 'Forêt Aléatoire')
+plot_predictions(y_test, gb_y_pred, 'Gradient Boosting')
+plot_predictions(y_test, xgb_y_pred, 'XGBoost')
+def plot_residuals(y_test, y_pred, model_name):
+    residuals = y_test - y_pred
+    plt.figure(figsize=(6, 4))
+    plt.hist(residuals, bins=30, color='skyblue', edgecolor='black')
+    plt.axvline(0, color='red', linestyle='--')
+    plt.title(f'{model_name} : Histogramme des résidus')
+    plt.xlabel('Résidus')
+    plt.ylabel('Fréquence')
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+# Utilisation :
+plot_residuals(y_test, y_pred_lr, 'Régression Linéaire')
+plot_residuals(y_test, ridge_y_pred, 'Ridge')
+plot_residuals(y_test, rf_y_pred, 'Forêt Aléatoire')
+plot_residuals(y_test, gb_y_pred, 'Gradient Boosting')
+plot_residuals(y_test, xgb_y_pred, 'XGBoost')
+def plot_regression_line(y_test, y_pred, model_name):
+    plt.figure(figsize=(6, 5))
+    plt.scatter(range(len(y_test)), y_test, label='Valeurs réelles', alpha=0.6)
+    plt.plot(range(len(y_pred)), y_pred, color='red', label='Valeurs prédites')
+    plt.title(f'{model_name} : Régression - Réel vs Prédit')
+    plt.xlabel('Index')
+    plt.ylabel('Taux de chômage')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+# Utilisation :
+plot_regression_line(y_test.values, y_pred_lr, 'Régression Linéaire')
+plot_regression_line(y_test.values, ridge_y_pred, 'Ridge')
+plot_regression_line(y_test.values, rf_y_pred, 'Forêt Aléatoire')
+plot_regression_line(y_test.values, gb_y_pred, 'Gradient Boosting')
+plot_regression_line(y_test.values, xgb_y_pred, 'XGBoost')
 
 # Sauvegarder également les features
-joblib.dump((best_model, features_used), 'best_model.pkl')
+#joblib.dump((best_model, features_used), 'best_model.pkl')
 print("Modèle et features sauvegardés.")
