@@ -66,9 +66,3 @@ def find_best_matches(user_id, top_n=5):
     best_jobs = [{"job_id": job_ids[i], "score": similarities[i]} for i in sorted_indices]
 
     return best_jobs
-
-# Exemple d'utilisation
-if __name__ == "__main__":
-    user_id = 7  # Remplace par l'ID du client
-    matches = find_best_matches(user_id)
-    print(matches)  # Retourne une liste des meilleurs jobs avec leur score
