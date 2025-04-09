@@ -33,13 +33,7 @@ if ($stmt->rowCount() > 0) {
     exit();
 }
 ?>
-<?php
-//$scriptPath = __DIR__ . '/app1.py';  // Chemin vers ton script Python
-//echo "Avant exécution du script Python<br>";  // Message pour tester le flux
-//$output = shell_exec('python ' . escapeshellarg($scriptPath));
-//echo "Après exécution du script Python<br>";  // Message pour tester le flux
-//echo $output;  // Afficher la sortie du script Python
-?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -61,14 +55,14 @@ if ($stmt->rowCount() > 0) {
         <h2>Les statistiques du chômage en France selon l'INSEE</h2>
         <p>Les données suivantes reflètent l'évolution du chômage en France.</p>
     </div>
-
+    <!--Affichage des données de l'utilisateur -->
     <div class="client-info">
         <p>Cliquez sur <strong>Mon risque de chômage</strong> pour connaitre votre taux de chômage moyen par rapport à vos données:</p>
         <div><strong>Sexe:</strong> <span id="sexe"><?= $clientData['sexe'] ?></span></div>
         <div><strong>Catégorie d'âge:</strong> <span id="age_category"><?= $clientData['age_category'] ?></span></div>
         <div><strong>Niveau de diplôme:</strong> <span id="education_level"><?= $clientData['education_level'] ?></span></div>
     </div>
-
+    <!--tous les boutons présents sur la page -->
     <div class="option-section">
         <button class="btn-option" onclick="showStat('sexe')">Statistiques par Sexe</button>
         <button class="btn-option" onclick="showStat('age')">Statistiques par Âge</button>
@@ -100,7 +94,7 @@ if ($stmt->rowCount() > 0) {
             const resultDiv = document.getElementById('stat-result');
             let graphs = [];
             let interpretationText = "";
-
+            // affichage du graphique selon l'option choisi et le bouton sur lequel on clique
             if (option === "sexe") {
                 graphs = [
                     "graphs/graphique_sexe.html",
@@ -118,7 +112,7 @@ if ($stmt->rowCount() > 0) {
                 interpretationText = "Cette statistique analyse l’impact du niveau de diplôme sur le chômage.";
             }
 
-            // Générer plusieurs iframes si plusieurs graphiques existent
+            //En se basant sur Chatgpt: j'ai utilisé graphs.map pour regrouper et générer plusieurs iframes si plusieurs graphiques existent pour regrouper tous les graphiques sexe puisqu on les a pour plusieurs années
             resultDiv.innerHTML = graphs.map(src => 
                 `<iframe src="${src}" width="100%" height="500px" style="border:none;"></iframe>` 
             ).join("") + `<div class="stat-interpretation"><p>${interpretationText}</p></div>`;
@@ -134,7 +128,6 @@ if ($stmt->rowCount() > 0) {
             }, 1000);  // Ajustez ce délai en fonction du temps réel de chargement
         }
 
-        // Fonction pour tester la prédiction du chômage
         // Fonction pour tester la prédiction du chômage
         function predictChomage() {
             // Récupérer l'ID client depuis l'élément caché
@@ -156,7 +149,7 @@ if ($stmt->rowCount() > 0) {
             };
 
             console.log('Données envoyées:', requestData); // Afficher les données envoyées dans la console
-
+            // lancer la prédiction avec le chemin Flask en 
             fetch('http://127.0.0.1:5000/predict', {
                 method: 'POST',
                 headers: {

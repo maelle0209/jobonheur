@@ -68,9 +68,13 @@ X_train_scaled = scaler.fit_transform(X_train_noisy)
 X_test_scaled = scaler.transform(X_test_noisy)
 
 # ------------------------- Régression Linéaire -------------------------
+# La régression linéaire est un algorithme simple et interprétable qui cherche à ajuster une droite (ou un hyperplan)
+# aux données. Il est souvent utilisé comme modèle de base.
+# Référence : Géron, A. (2019). *Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow*.
+
 model_lr = LinearRegression()
-model_lr.fit(X_train_scaled, y_train)
-y_pred_lr = model_lr.predict(X_test_scaled)
+model_lr.fit(X_train_scaled, y_train)# Entraînement du modèle sur les données d'entraînement normalisées
+y_pred_lr = model_lr.predict(X_test_scaled)# Prédiction sur les données de test
 
 # Calculer les métriques
 mse_lr = mean_squared_error(y_test, y_pred_lr)
@@ -81,6 +85,9 @@ print(f'Erreur Absolue Moyenne (Régression Linéaire) : {mae_lr}')
 print(f'R² (Régression Linéaire) : {r2_lr}')
 
 # ------------------------- Ridge -------------------------
+# La régression Ridge est une extension de la régression linéaire qui ajoute une régularisation L2,
+# permettant de réduire le surapprentissage. 
+# Référence : Hoerl, A.E., & Kennard, R.W. (1970). *Ridge Regression: Biased Estimation for Nonorthogonal Problems*.
 ridge_model = Ridge(alpha=1.0)
 ridge_model.fit(X_train_scaled, y_train)
 ridge_y_pred = ridge_model.predict(X_test_scaled)
@@ -93,6 +100,10 @@ print(f'Erreur Absolue Moyenne (Ridge) : {mae_ridge}')
 print(f'R² (Ridge) : {r2_ridge}')
 
 # ------------------------- Forêt Aléatoire -------------------------
+# Les forêts aléatoires (Random Forests) sont des ensembles de plusieurs arbres de décision.
+# Elles permettent de réduire la variance par rapport à un seul arbre.
+# Référence : Breiman, L. (2001). *Random Forests*. Machine Learning.
+
 param_grid_rf = {'n_estimators': [50, 100, 150], 'max_depth': [3, 5, 10]}
 grid_search_rf = GridSearchCV(RandomForestRegressor(), param_grid_rf, cv=5, scoring='neg_mean_squared_error')
 grid_search_rf.fit(X_train_scaled, y_train)
@@ -107,6 +118,8 @@ print(f'Erreur Absolue Moyenne (Forêt Aléatoire) : {rf_mae}')
 print(f'R² (Forêt Aléatoire) : {rf_r2}')
 
 # ------------------------- Gradient Boosting -------------------------
+# Le Gradient Boosting est une méthode d’ensemble qui construit les modèles séquentiellement pour corriger les erreurs du précédent.
+# Référence : Friedman, J. H. (2001). *Greedy Function Approximation: A Gradient Boosting Machine*.
 gb_model = GradientBoostingRegressor(n_estimators=50, max_depth=3, random_state=42)
 gb_model.fit(X_train_scaled, y_train)
 gb_y_pred = gb_model.predict(X_test_scaled)
@@ -119,6 +132,8 @@ print(f'Erreur Absolue Moyenne (Gradient Boosting) : {gb_mae}')
 print(f'R² (Gradient Boosting) : {gb_r2}')
 
 # ------------------------- XGBoost -------------------------
+# XGBoost (Extreme Gradient Boosting) est une version optimisée du Gradient Boosting, plus rapide et souvent plus performante.
+# Référence : Chen, T., & Guestrin, C. (2016). *XGBoost: A Scalable Tree Boosting System*. 
 xgb_model = xgb.XGBRegressor(n_estimators=50, max_depth=3, learning_rate=0.1)
 xgb_model.fit(X_train_scaled, y_train)
 xgb_y_pred = xgb_model.predict(X_test_scaled)
@@ -131,6 +146,7 @@ print(f'Erreur Absolue Moyenne (XGBoost) : {xgb_mae}')
 print(f'R² (XGBoost) : {xgb_r2}')
 
 # ------------------------- Comparaison des performances -------------------------
+# On compare ici les performances en termes d'erreur quadratique moyenne (MSE)
 models = ['Régression Linéaire', 'Ridge', 'Forêt Aléatoire', 'Gradient Boosting', 'XGBoost']
 errors = [mse_lr, mse_ridge, rf_mse, gb_mse, xgb_mse]
 
@@ -140,10 +156,18 @@ plt.title('Comparaison des performances des modèles')
 plt.show()
 
 # ------------------------- Enregistrer le meilleur modèle -------------------------
+# Le modèle avec la plus faible MSE est conservé pour une utilisation future
 best_model = min([(mse_lr, model_lr), (mse_ridge, ridge_model), (rf_mse, rf_model), (gb_mse, gb_model), (xgb_mse, xgb_model)], key=lambda x: x[0])[1]
 features_used = X_train.columns.tolist()
 print(f"Features utilisées pour l'entraînement : {features_used}")
 def plot_predictions(y_test, y_pred, model_name):
+    #Affiche un nuage de points entre les valeurs réelles et prédites pour un modèle donné.
+    
+    #Args:
+        #y_test (array-like): valeurs réelles
+        #y_pred (array-like): valeurs prédites par le modèle
+        #model_name (str): nom du modèle utilisé
+    
     plt.figure(figsize=(6, 6))
     plt.scatter(y_test, y_pred, color='blue', edgecolor='k', alpha=0.6)
     plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], color='red', lw=2, linestyle='--')
@@ -161,6 +185,7 @@ plot_predictions(y_test, rf_y_pred, 'Forêt Aléatoire')
 plot_predictions(y_test, gb_y_pred, 'Gradient Boosting')
 plot_predictions(y_test, xgb_y_pred, 'XGBoost')
 def plot_residuals(y_test, y_pred, model_name):
+    #Affiche l'histogramme des résidus d'un modèle (différence entre y_test et y_pred).
     residuals = y_test - y_pred
     plt.figure(figsize=(6, 4))
     plt.hist(residuals, bins=30, color='skyblue', edgecolor='black')
@@ -179,6 +204,7 @@ plot_residuals(y_test, rf_y_pred, 'Forêt Aléatoire')
 plot_residuals(y_test, gb_y_pred, 'Gradient Boosting')
 plot_residuals(y_test, xgb_y_pred, 'XGBoost')
 def plot_regression_line(y_test, y_pred, model_name):
+    #Trace les valeurs réelles et prédites en fonction de leur index pour visualiser l'ajustement du modèle.
     plt.figure(figsize=(6, 5))
     plt.scatter(range(len(y_test)), y_test, label='Valeurs réelles', alpha=0.6)
     plt.plot(range(len(y_pred)), y_pred, color='red', label='Valeurs prédites')
@@ -198,5 +224,5 @@ plot_regression_line(y_test.values, gb_y_pred, 'Gradient Boosting')
 plot_regression_line(y_test.values, xgb_y_pred, 'XGBoost')
 
 # Sauvegarder également les features
-#joblib.dump((best_model, features_used), 'best_model.pkl')
+joblib.dump((best_model, features_used), 'best_model.pkl')
 print("Modèle et features sauvegardés.")
