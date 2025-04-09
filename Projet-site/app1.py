@@ -1,16 +1,29 @@
-from flask import Flask, jsonify, request, session
-import joblib
-import pandas as pd
-import requests
+from flask import Flask, jsonify, request, session #pour créer l'application web.
+import joblib # Pour charger le modèle entraîné
+import pandas as pd # Pour structurer les données en DataFrame
+import requests # Pour envoyer des requêtes HTTP
 import numpy as np
-from flask_cors import CORS
+from flask_cors import CORS #pour permettre l’accès à l’API depuis d'autres domaines (frontend et backend séparés).
 
+# Initialisation de l'application Flask
 app = Flask(__name__)
 CORS(app)  # Active CORS pour toutes les routes
-
-app.secret_key = 'ton_clé_secrète'  # Remplace par une vraie clé secrète
+# Clé secrète pour gérer les sessions utilisateur
+app.secret_key = 'ton_clé_secrète'  
 
 def get_client_data(id_client):
+    """
+    Envoie une requête POST à un script PHP pour récupérer les données d'un client donné.
+
+    Args:
+        id_client (str): L'identifiant unique du client.
+
+    Returns:
+        dict: Un dictionnaire contenant les données du client.
+
+    Raises:
+        ValueError: Si l'API retourne une erreur ou une réponse invalide.
+    """
     url = "http://localhost/jobonheur/Projet-site/getClientData.php"
     headers = {'Content-Type': 'application/json'}
     data = {'id_client': id_client}
@@ -47,6 +60,15 @@ if hasattr(model, "feature_names_in_"):
 
 # Fonction pour générer des conseils
 def generate_advice(predicted_rate):
+     """
+    Génère une liste de conseils personnalisés en fonction du taux de chômage prédit.
+
+    Args:
+        predicted_rate (float): Le taux de chômage prédit (entre 0 et 1).
+
+    Returns:
+        list: Une liste de conseils à afficher à l'utilisateur.
+    """
     predicted_rate *= 100
     advice = []
     if predicted_rate > 12:
@@ -62,6 +84,13 @@ def generate_advice(predicted_rate):
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    """
+    Endpoint principal de prédiction.
+    Reçoit un ID client, récupère ses données, génère une prédiction et retourne des conseils.
+
+    Returns:
+        JSON: Une réponse contenant la prédiction et les conseils ou un message d'erreur.
+    """
     try:
         data = request.get_json()  
         print(f"Requête reçue : {data}")
@@ -146,8 +175,9 @@ def predict():
         return jsonify({'prediction': f"{round(prediction * 100, 6)}%", 'advice': advice})
 
     except Exception as e:
+        # Gestion des erreurs internes
         return jsonify({'error': str(e)}), 500
 
-
+# Lancement de l'application en mode debug pour le développement
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
