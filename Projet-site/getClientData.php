@@ -1,5 +1,6 @@
 <?php
-session_start();
+session_start();// Démarre la session utilisateur
+
 include 'bd.php';  // Connexion à la base de données
 $bdd = getBD();  
 
@@ -21,6 +22,13 @@ if (isset($data['id_client']) && !empty($data['id_client'])) {
 }
 
 try {
+     /**
+     * Étape 2 : Requête SQL pour récupérer les données du client
+     * 
+     * - On joint les tables `clients` et `cv` via leur champ commun `id_client`
+     * - On limite à 1 résultat pour l'efficacité
+     * - Sécurité : utilisation d'une requête préparée (bindParam)
+     */
     $query = "SELECT clients.sexe, cv.age_category, cv.education_level
               FROM clients
               JOIN cv ON clients.id_client = cv.id_client
