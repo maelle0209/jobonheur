@@ -38,6 +38,6 @@ if (empty($nom) || empty($prenom) || empty($email) || $mdp1 !== $mdp2) {
     enregistrer($nom, $prenom, $email, $motDePasseHashe, $sexe);
     
     // Redirection vers la page d'accueil ou de confirmation
-      echo '<meta http-equiv="refresh" content="0;url=jobonheur.php">';
+      echo '<meta http-equiv="refresh" content="0;url=index.php">';
 }
 ?>

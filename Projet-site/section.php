@@ -26,7 +26,7 @@ session_start(); //  Important pour récupérer les infos de session
 
     <!-- Déconnexion -->
     <div class="header">
-        <a href="jobonheur.php" class="btn-retour">Retour à l'accueil</a>
+        <a href="index.php" class="btn-retour">Retour à l'accueil</a>
     </div>
 
     <!-- Message de connexion réussi -->
