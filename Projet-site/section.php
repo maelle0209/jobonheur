@@ -7,7 +7,7 @@ session_start(); //  Important pour récupérer les infos de session
         header("Location: connexion.php");
         exit;
     }
-    $client_id = $_SESSION['client_id']; // ✅ Récupérer l'ID pour l'utiliser
+    $client_id = $_SESSION['client_id']; // Récupérer l'ID pour l'utiliser
     
 ?>
 

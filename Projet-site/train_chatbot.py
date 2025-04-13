@@ -35,7 +35,7 @@ chatbot = ChatBot(
 # Entraînement avec des données de base et un corpus personnalisé
 trainer = ChatterBotCorpusTrainer(chatbot)
 
-# Définir le chemin absolu du fichier YAML personnalisé
+# Définir le chemin absolu du fichier YAML 
 # Charger les données depuis le fichier YAML
 chemin_yaml = "work_advice.yml"
 with open(chemin_yaml, "r", encoding="utf-8") as file:
@@ -46,13 +46,13 @@ for conversation in data['conversations']:
     if len(conversation) >= 2:  # Vérifier qu'il y a bien une question et une réponse
         chatbot.storage.create(text=conversation[0], in_response_to=conversation[1])
 
-print("✅ Les conversations ont été ajoutées à la base de données.")
+print(" Les conversations ont été ajoutées à la base de données.")
 
 def load_conversations():
     statements = chatbot.storage.filter()
     
     if not statements:  # Si la base est vide
-        print("⚠️ Aucun dialogue trouvé ! Veuillez entraîner votre chatbot d'abord.")
+        print(" Aucun dialogue trouvé ! Veuillez entraîner votre chatbot d'abord.")
         return {}
 
     return {str(statement.text): str(statement.in_response_to) for statement in statements if statement.in_response_to}

@@ -13,7 +13,7 @@ echo "Client connecté : " . $_SESSION['client_id'];
     <title>Connexion</title>
 </head>
 <body>
-
+<!-- Formulaire de connexion -->
 <h1>Connexion</h1>
 <p>Pas encore de compte ? <a href="nouveau.php">Créer un compte</a></p>
 

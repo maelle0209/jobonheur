@@ -9,8 +9,8 @@ media="screen" />
 <title>Nouveau</title>
 </head>
 <body>
-
-    <h1>Nouveau Client</h1>
+<!-- Formulaire de nouveau utilisateur -->
+    <h1>Nouveau Client</h1> 
     <p>Création de Compte - Nouveau Client</p>
     <form method="get" action="enregistrement.php" autocomplete="off">
      <p>
