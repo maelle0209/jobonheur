@@ -60,15 +60,6 @@ if hasattr(model, "feature_names_in_"):
 
 # Fonction pour générer des conseils
 def generate_advice(predicted_rate):
-     """
-    Génère une liste de conseils personnalisés en fonction du taux de chômage prédit.
-
-    Args:
-        predicted_rate (float): Le taux de chômage prédit (entre 0 et 1).
-
-    Returns:
-        list: Une liste de conseils à afficher à l'utilisateur.
-    """
     predicted_rate *= 100
     advice = []
     if predicted_rate > 12:
