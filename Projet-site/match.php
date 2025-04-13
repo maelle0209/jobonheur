@@ -1,35 +1,35 @@
 <?php
 session_start();
-include 'bd.php'; // Inclure la fonction pour se connecter à la base de données
+include 'bd.php'; #connecteion à la base de données
 
-// Vérifier si l'utilisateur est connecté
+#Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['client_id'])) {
-    header("Location: connexion.php"); // Rediriger vers la page de connexion si non connecté
+    header("Location: connexion.php"); # Rediriger vers la page de connexion si non connecté
     exit;
 }
 
-$userId = $_SESSION['client_id']; // Récupérer l'ID de l'utilisateur connecté
+$userId = $_SESSION['client_id']; #Récupérer l'ID de l'utilisateur connecté
 
-// Connexion à la base de données
-$bdd = getBD(); // Fonction pour se connecter à la base de données
+# Connexion à la base de données
+$bdd = getBD(); # Fonction pour se connecter à la base de données
 
-// Récupérer l'ID de l'offre de la requête, sinon prendre la première offre
+# Récupérer l'ID de l'offre de la requête, sinon prendre la première offre
 $jobId = isset($_GET['job_id']) ? $_GET['job_id'] : 1;
 
-// Vérifier si l'utilisateur a déjà vu un job et récupérer l'ID du dernier job vu
+# Vérifier si l'utilisateur a déjà vu un job et récupérer l'ID du dernier job vu
 $queryLastJob = "SELECT last_job_id FROM clients WHERE id_client = ?";
 $stmtLastJob = $bdd->prepare($queryLastJob);
 $stmtLastJob->execute([$userId]);
 $lastJob = $stmtLastJob->fetch();
 
 if ($lastJob && $lastJob['last_job_id']) {
-    $jobId = $lastJob['last_job_id']; // Si l'utilisateur a déjà un dernier job vu, on l'affiche
+    $jobId = $lastJob['last_job_id']; # Si l'utilisateur a déjà un dernier job vu, on l'affiche
 } else {
-    // Sinon, on prend la première offre par défaut
+    # Sinon, on prend la première offre par défaut
     $jobId = 1;
 }
 
-// Récupérer l'offre actuelle
+# Récupérer l'offre actuelle
 $query = "SELECT `job_id`, `Intitulé du poste`, `Description`, `Ville`, `Type de contrat`, `salaire`, `Entreprise`, `lien`, `niveau libellé`,`compétences exigées`, `Qualité professionnelles`
           FROM response_2 WHERE `job_id` = ?";
 $stmt = $bdd->prepare($query);
@@ -37,56 +37,56 @@ $stmt->execute([$jobId]);
 $job = $stmt->fetch();
 
 if (!$job) {
-    // Si aucun résultat, afficher un message d'erreur ou rediriger
+    # Si aucun résultat, afficher un message d'erreur ou rediriger
     echo 'Aucune offre trouvée.';
     exit;
 }
-/// Récupérer l'ID du job suivant (l'ID du job actuel + 1 ou par une autre méthode)
-$nextJobId = $jobId + 1; // Exemple pour passer au job suivant par ID
+#/ Récupérer l'ID du job suivant (l'ID du job actuel + 1 ou par une autre méthode)
+$nextJobId = $jobId + 1; # Exemple pour passer au job suivant par ID
 $queryNextJob = "SELECT job_id FROM response_2 WHERE job_id = ?";
 $stmtNextJob = $bdd->prepare($queryNextJob);
 $stmtNextJob->execute([$nextJobId]);
 $nextJob = $stmtNextJob->fetch();
 
 if (!$nextJob) {
-    // Si l'ID suivant n'existe pas, prenez l'ID du premier job
+    # Si l'ID suivant n'existe pas, prenez l'ID du premier job
     $nextJobId = 1;
 }
 
-// Maintenant, vous pouvez utiliser $nextJobId pour la redirection après avoir refusé l'offre
+# Maintenant, vous pouvez utiliser $nextJobId pour la redirection après avoir refusé l'offre
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_POST['action'] === 'favoris') {
-        // Ajouter aux favoris
+        # Ajouter aux favoris
         $favQuery = "INSERT INTO favoris (user_id, job_id) VALUES (?, ?)";
         $stmt = $bdd->prepare($favQuery);
         $stmt->execute([$userId, $jobId]);
 
-          // Vérifier si l'insertion a réussi
+          # Vérifier si l'insertion a réussi
           if ($stmt->rowCount() === 0) {
             die("Erreur lors de l'ajout aux favoris.");
         }
 
-        // Mise à jour du dernier job vu
+        # Mise à jour du dernier job vu
         $queryUpdate = "UPDATE clients SET last_job_id = ? WHERE id_client = ?";
         $stmtUpdate = $bdd->prepare($queryUpdate);
         $stmtUpdate->execute([$nextJobId, $userId]);
 
-        // Vérifier si la mise à jour a réussi
+        # Vérifier si la mise à jour a réussi
         if ($stmtUpdate->rowCount() === 0) {
             die("Erreur lors de la mise à jour du dernier job vu.");
         }
 
-        // Rediriger vers le prochain job
+        # Rediriger vers le prochain job
         header("Location: match.php?job_id=$nextJobId");
         die(); 
-        exit; // Assurez-vous que la redirection s'arrête ici
-    } elseif ($_POST['action'] === 'refus') {
+        exit; # Assurez-vous que la redirection s'arrête ici
+    } elseif ($_POST['action'] === 'refus') { #refuser l'offre
         $queryUpdate = "UPDATE clients SET last_job_id = ? WHERE id_client = ?";
         $stmtUpdate = $bdd->prepare($queryUpdate);
         $stmtUpdate->execute([$nextJobId, $userId]);
-        // Passer à l'offre suivante
+        # Passer à l'offre suivante
         header("Location: match.php?job_id=$nextJobId");
-        exit; // Assurez-vous que la redirection s'arrête ici
+        exit; # Assurez-vous que la redirection s'arrête ici
     }
 }
 
@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h2>Vos Favoris</h2>
             <ul>
                 <?php
-                // Récupérer les favoris pour l'utilisateur connecté
+                # Récupérer les favoris pour l'utilisateur connecté
                 $favQuery = "SELECT favoris.job_id, `Intitulé du poste`, `Entreprise` 
              FROM favoris 
              JOIN response_2 ON favoris.job_id = response_2.job_id
@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
              $stmt->execute([$userId]);
              $favoris = $stmt->fetchAll();
 
-
+                // affichage des favoris
                 if ($favoris) {
                     foreach ($favoris as $favori) {
                         echo "<li onclick=\"window.location.href='fiche_poste.php?job_id={$favori['job_id']}'\">";
@@ -158,6 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
+    <!-- Script de gestion du swipe (mobile + desktop) -->
     <script>
     const jobCard = document.querySelector('.job-card');
     const actionIndicator = jobCard.querySelector('.action-indicator');
@@ -168,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     function startSwipe(e) {
         isDragging = true;
         startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
-        jobCard.style.transition = 'none'; // Désactive la transition
+        jobCard.style.transition = 'none'; # Désactive la transition
     }
 
     function swipe(e) {
@@ -178,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         jobCard.style.transform = `translateX(${translateX}px) rotate(${translateX / 20}deg)`;
 
-        // Indicateur d'action (favoris ou refus)
+        //Indicateur d'action (favoris ou refus)
         if (translateX > 0) {
             actionIndicator.textContent = 'Favoris';
             actionIndicator.style.color = '#4caf50'; // Vert
